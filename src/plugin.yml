@@ -1,0 +1,12 @@
+name: PunishmentGUI
+version: 0.1
+description: Gives a GUI window to punish players
+author: Tecno_Wizard
+main: com.tecno_wizard.plugingui.core.Main
+commands:
+  punish:
+    description: 'Punishes the given player'
+    usage: '§cIncorrect usage. /punish <PlayerName> <Reason>'
+    permission: 'punishment.use'
+    permission-message: '
+permissions:
