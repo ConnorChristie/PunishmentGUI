@@ -30,11 +30,11 @@ public class GUIConstructor implements CommandExecutor{
     private ItemStack permMute;
     private ItemStack permBan;
 
-    private static final String WARN_DISPLAY_NAME = ChatColor.GOLD + "Warn";
-    private static final String TEMP_MUTE_DISPLAY_NAME = ChatColor.GOLD + "Temporary Mute";
-    private static final String TEMP_BAN_DISPLAY_NAME = ChatColor.GOLD + "Temporary Ban";
-    private static final String PERM_MUTE_DISPLAY_NAME = ChatColor.GOLD + "Permanent Mute";
-    private static final String PERM_BAN_DISPLAY_NAME = ChatColor.GOLD + "Permanent Ban";
+    private static final String WARN_DISPLAY_NAME = ChatColor.GOLD + ChatColor.BOLD "Warn";
+    private static final String TEMP_MUTE_DISPLAY_NAME = ChatColor.GOLD + ChatColor.BOLD + "Temporary Mute";
+    private static final String TEMP_BAN_DISPLAY_NAME = ChatColor.GOLD +  ChatColor.BOLD +  "Temporary Ban";
+    private static final String PERM_MUTE_DISPLAY_NAME = ChatColor.GOLD + ChatColor.BOLD +  "Permanent Mute";
+    private static final String PERM_BAN_DISPLAY_NAME = ChatColor.GOLD +  ChatColor.BOLD + "Permanent Ban";
 
     private static final String ACTIVE_TAG = ChatColor.MAGIC + "|" + ChatColor.RED + "Currently Active" + ChatColor.MAGIC + "|";
 
