@@ -1,6 +1,6 @@
 Updater:
   UpdateNotificationsOn: true
   AutomaticallyGetLatestVersion: true
-PluginPrefix: 'Punish'
+PluginPrefix: '§c§lPUNISH '
 SeedTempBanTime: 120
 SeedTempMuteTime: 120
