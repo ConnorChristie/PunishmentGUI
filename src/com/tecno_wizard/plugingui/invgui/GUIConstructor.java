@@ -30,11 +30,11 @@ public class GUIConstructor implements CommandExecutor{
     private ItemStack permMute;
     private ItemStack permBan;
 
-    private static final String WARN_DISPLAY_NAME = ChatColor.GOLD + "Warn";
-    private static final String TEMP_MUTE_DISPLAY_NAME = ChatColor.GOLD + "Temporary Mute";
-    private static final String TEMP_BAN_DISPLAY_NAME = ChatColor.GOLD + "Temporary Ban";
-    private static final String PERM_MUTE_DISPLAY_NAME = ChatColor.GOLD + "Permanent Mute";
-    private static final String PERM_BAN_DISPLAY_NAME = ChatColor.GOLD + "Permanent Ban";
+    private static final String WARN_DISPLAY_NAME = ChatColor.GOLD + ChatColor.BOLD "Warn";
+    private static final String TEMP_MUTE_DISPLAY_NAME = ChatColor.GOLD + ChatColor.BOLD + "Temporary Mute";
+    private static final String TEMP_BAN_DISPLAY_NAME = ChatColor.GOLD +  ChatColor.BOLD +  "Temporary Ban";
+    private static final String PERM_MUTE_DISPLAY_NAME = ChatColor.GOLD + ChatColor.BOLD +  "Permanent Mute";
+    private static final String PERM_BAN_DISPLAY_NAME = ChatColor.GOLD +  ChatColor.BOLD + "Permanent Ban";
 
     private static final String ACTIVE_TAG = ChatColor.MAGIC + "|" + ChatColor.RED + "Currently Active" + ChatColor.MAGIC + "|";
 
@@ -46,19 +46,19 @@ public class GUIConstructor implements CommandExecutor{
         // note to @OfficerDeveloper, none of this is even close to done. Most of the methods here will disappear. Organizing.
         warn = new ItemStack(Material.PAPER, 1);
         editMetadata(warn, WARN_DISPLAY_NAME,
-                ChatColor.LIGHT_PURPLE + "Warns the player of improper behavior");
+                ChatColor.GOLD + "Warn the player");
         tempMute = new ItemStack(Material.INK_SACK, 1, (short)12);
         editMetadata(tempMute, TEMP_MUTE_DISPLAY_NAME,
-                ChatColor.LIGHT_PURPLE + "Temporarily mutes the player");
+                ChatColor.GOLD + "Temporarily mute the player");
         tempBan = new ItemStack(Material.INK_SACK, 1, (short)1);
         editMetadata(tempBan, TEMP_BAN_DISPLAY_NAME,
-                ChatColor.LIGHT_PURPLE + "Temporarily bans the player");
+                ChatColor.GOLD + "Temporarily ban the player");
         permMute = new ItemStack(Material.BOOK, 1);
         editMetadata(permMute, PERM_MUTE_DISPLAY_NAME,
-                ChatColor.LIGHT_PURPLE + "Permanently mutes the player");
+                ChatColor.GOLD + "Permanently mute the player");
         permBan = new ItemStack(Material.REDSTONE_BLOCK, 1);
         editMetadata(permBan, PERM_BAN_DISPLAY_NAME,
-                ChatColor.LIGHT_PURPLE + "Permanently bans the player");
+                ChatColor.GOLD + "Permanently ban the player");
     }
 
     @Override
