@@ -53,8 +53,7 @@ public class Main extends JavaPlugin {
     private void startPluginMetrics() {
         try {
             pm = new Metrics(this);
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
         boolean didMetricsLoad = pm.start();
         if (!didMetricsLoad) {
             Bukkit.getLogger().info(String.format("[%s] Plugin metrics is disabled. This will not affect the performance of CommandsForSale.",

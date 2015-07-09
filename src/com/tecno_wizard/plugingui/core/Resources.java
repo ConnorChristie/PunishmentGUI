@@ -27,9 +27,8 @@ public class Resources {
     public static final String TEMP_MUTE_PERM = "punish.temp_mute";
     /**
      * Allows use of temp ban
-     */
-    public static final String TEMP_BAN_PERM = "punish.temp_ban";
-    /**
+     public static final String TEMP_BAN_PERM = "punish.temp_ban";
+     /**
      * Allows use of perm ban
      */
     public static final String PERM_BAN_PERM = "punish.perm_ban";
@@ -38,9 +37,19 @@ public class Resources {
      */
     public static final String PERM_MUTE_PERM = "punish.perm_mute";
     /**
-     * Denies the player from being punished
+     * Denies the player from being punished.
+     * CURRENTLY UNUSED
      */
     public static final String PROTECTED_PERM = "punish.protected";
+
+    /**
+     * Seed time of a temp mute in minutes
+     */
+    private static long SEED_TEMP_MUTE_TIME;
+    /**
+     * Seed time of a temp ban in minutes
+     */
+    private static long SEED_TEMP_BAN_TIME;
 
     public Resources(JavaPlugin plugin) {
         Resources.plugin = plugin;
@@ -50,6 +59,8 @@ public class Resources {
 
     protected void setDataFields() {
         pluginPrefix = plugin.getConfig().getString("PluginPrefix");
+        SEED_TEMP_BAN_TIME = plugin.getConfig().getLong("SeedTempBanTime");
+        SEED_TEMP_MUTE_TIME = plugin.getConfig().getLong("SeedTempMuteTime");
     }
 
     private void directoryCheck(JavaPlugin plugin) {
@@ -69,8 +80,6 @@ public class Resources {
         } catch (IOException e) {}
         return null;
     }
-
-
 
 
     public static void sendMessage(String msg, CommandSender recipient, ChatColor startColor){

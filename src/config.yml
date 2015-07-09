@@ -1,6 +1,11 @@
 Updater:
+  #engages the system that checks for updates. This alone will not automatically update the system.
   UpdateNotificationsOn: true
+  #engages the system that updates the plugin automatically. UpdateNotificationsOn must be true for the auto-update to work
   AutomaticallyGetLatestVersion: true
+#prefix that will be displayed to players
 PluginPrefix: 'Punish'
+#number of minutes that a temp ban starts at. Increases by an exponential factor of 2 with each offense.
 SeedTempBanTime: 120
+#number of minutes that a temp mute starts at. Increases by an exponential factor of 2 with each offense.
 SeedTempMuteTime: 120
