@@ -1,5 +1,6 @@
 package com.tecno_wizard.plugingui.core;
 
+import com.tecno_wizard.plugingui.data.TemporaryPunishType;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -27,8 +28,9 @@ public class Resources {
     public static final String TEMP_MUTE_PERM = "punish.temp_mute";
     /**
      * Allows use of temp ban
-     public static final String TEMP_BAN_PERM = "punish.temp_ban";
-     /**
+     */
+    public static final String TEMP_BAN_PERM = "punish.temp_ban";
+    /**
      * Allows use of perm ban
      */
     public static final String PERM_BAN_PERM = "punish.perm_ban";
@@ -68,6 +70,12 @@ public class Resources {
         file.mkdirs();
     }
 
+    public static long getSeedPunishTime(TemporaryPunishType type) {
+        if(type.equals(TemporaryPunishType.TEMP_BAN)) return SEED_TEMP_BAN_TIME;
+        else return SEED_TEMP_MUTE_TIME;
+    }
+
+
     public static YamlConfiguration getPlayerFile(OfflinePlayer player) {
         return getPlayerFile(player.getUniqueId());
     }
@@ -77,6 +85,15 @@ public class Resources {
         try {
             if (!file.exists()) file.createNewFile();
             return YamlConfiguration.loadConfiguration(file);
+        } catch (IOException e) {}
+        return null;
+    }
+
+    public static File getPlayerFileSaveLoc(UUID id) {
+        File file = new File(plugin.getDataFolder().getPath() + "/Players/" + id.toString() + ".yml");
+        try {
+            if (!file.exists()) file.createNewFile();
+            return file;
         } catch (IOException e) {}
         return null;
     }

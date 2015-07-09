@@ -1,7 +1,6 @@
 package com.tecno_wizard.plugingui.data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Ethan Zeigler on 7/7/2015 for PunismentGUI.
