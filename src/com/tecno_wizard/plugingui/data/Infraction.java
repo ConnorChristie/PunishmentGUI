@@ -9,11 +9,13 @@ public class Infraction implements Serializable{
     private PunishType type;
     private String reason;
     private long date;
+    private String givenBy;
 
-    public Infraction(PunishType type, String reason, long date) {
+    public Infraction(PunishType type, String reason, long date, String givenBy) {
         this.type = type;
         this.reason = reason;
         this.date = date;
+        this.givenBy = givenBy;
     }
 
     public long getDate() {
@@ -26,5 +28,9 @@ public class Infraction implements Serializable{
 
     public PunishType getType() {
         return type;
+    }
+
+    public String getGivenBy() {
+        return givenBy;
     }
 }

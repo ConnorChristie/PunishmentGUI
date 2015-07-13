@@ -1,5 +1,6 @@
 package com.tecno_wizard.plugingui.core;
 
+import com.tecno_wizard.plugingui.invgui.GUIConstructor;
 import net.gravitydevelopment.updater.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ public class Main extends JavaPlugin {
     private static Metrics pm;
     private static Updater updater;
     private static UpdateScheduler updateScheduler;
+    private GUIConstructor constructor;
 
 
     @Override
@@ -34,7 +36,7 @@ public class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-
+        constructor = new GUIConstructor(this);
     }
 
     private void registerListeners() {
@@ -56,7 +58,7 @@ public class Main extends JavaPlugin {
         } catch (IOException e) {}
         boolean didMetricsLoad = pm.start();
         if (!didMetricsLoad) {
-            Bukkit.getLogger().info(String.format("[%s] Plugin metrics is disabled. This will not affect the performance of CommandsForSale.",
+            Bukkit.getLogger().info(String.format("[%s] Plugin metrics is disabled. This will not affect the performance of PunishmentGUI.",
                     getConfig().getString("PluginPrefix")));
         }
     }

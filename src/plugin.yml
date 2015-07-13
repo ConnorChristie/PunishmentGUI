@@ -8,5 +8,5 @@ commands:
     description: 'Punishes the given player'
     usage: '§cIncorrect usage. /punish <PlayerName> <Reason>'
     permission: 'punishment.use'
-    permission-message: '
-permissions:
+    permission-message: ''
+#permissions:
