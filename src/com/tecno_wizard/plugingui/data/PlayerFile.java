@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by Ethan Zeigler on 7/7/2015 for PunismentGUI.
+ * Created by Ethan Zeigler on 7/7/2015 for PunishmentGUI.
  */
 public class PlayerFile {
     private YamlConfiguration configuration;
@@ -43,12 +43,12 @@ public class PlayerFile {
     /**
      * Gets the number of milliseconds until the temporary punishment expires
      * @param type any temporary punish type
-     * @return returns the number of milliseconds until the given punishment ends. Types that do not end or are NA will return 0
+     * @return returns the number of milliseconds at which the given punishment ends. Types that do not end or are NA will return 0
      */
     public long getExpirationOfTemporaryPunishment(TemporaryPunishType type) {
         Long time = System.currentTimeMillis();
         if(configuration.getLong(type.toString(), 0L)  <= time) return 0L;
-        return configuration.getLong(type.toString(), 0L) - time;
+        return configuration.getLong(type.toString(), 0L);
     }
 
     public List<Infraction> getInfractionHistory() {

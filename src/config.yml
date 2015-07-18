@@ -9,3 +9,5 @@ PluginPrefix: 'Punish'
 SeedTempBanTime: 120
 #number of minutes that a temp mute starts at. Increases by an exponential factor of 2 with each offense.
 SeedTempMuteTime: 120
+#the message said after being blocked for being banned
+PunishMessageSuffix: 'If you feel that this is a mistake, contact us.'

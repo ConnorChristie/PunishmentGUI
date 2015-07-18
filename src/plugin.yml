@@ -9,4 +9,14 @@ commands:
     usage: '§cIncorrect usage. /punish <PlayerName> <Reason>'
     permission: 'punishment.use'
     permission-message: ''
-#permissions:
+permissions:
+  punish.use:
+    description: 'Gives the ability to use the punish GUI'
+  punish.temp_mute:
+    description: 'Gives the ability to temp mute a player in the GUI'
+  punish.temp_ban:
+    description: 'Gives the ability to temp ban a player in the GUI'
+  punish.perm_ban:
+    description: 'Gives the ability to perm ban a player in the GUI'
+  punish.perm_mute:
+    description: 'Gives the ability to perm mute a player in the GUI'

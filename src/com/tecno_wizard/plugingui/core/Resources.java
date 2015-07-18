@@ -53,6 +53,8 @@ public class Resources {
      */
     private static long SEED_TEMP_BAN_TIME;
 
+    private static String PUNISHMENT_MESSAGE_SUFFIX;
+
     public Resources(JavaPlugin plugin) {
         Resources.plugin = plugin;
         setDataFields();
@@ -61,6 +63,7 @@ public class Resources {
 
     protected void setDataFields() {
         pluginPrefix = plugin.getConfig().getString("PluginPrefix");
+        PUNISHMENT_MESSAGE_SUFFIX = plugin.getConfig().getString("PunishMessageSuffix");
         SEED_TEMP_BAN_TIME = plugin.getConfig().getLong("SeedTempBanTime");
         SEED_TEMP_MUTE_TIME = plugin.getConfig().getLong("SeedTempMuteTime");
     }
@@ -75,10 +78,10 @@ public class Resources {
         else return SEED_TEMP_MUTE_TIME;
     }
 
-
     public static YamlConfiguration getPlayerFile(OfflinePlayer player) {
         return getPlayerFile(player.getUniqueId());
     }
+
 
     public static YamlConfiguration getPlayerFile(UUID id) {
         File file = new File(plugin.getDataFolder().getPath() + "/Players/" + id.toString() + ".yml");
@@ -98,11 +101,13 @@ public class Resources {
         return null;
     }
 
-
     public static void sendMessage(String msg, CommandSender recipient, ChatColor startColor){
         recipient.sendMessage(String.format("%s[%s] %s", startColor, pluginPrefix, msg));
     }
 
+    public static String getPunishmentMessageSuffix() {
+        return PUNISHMENT_MESSAGE_SUFFIX;
+    }
 
     public String getPluginPrefix() {
         return pluginPrefix;

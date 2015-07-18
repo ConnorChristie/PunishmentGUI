@@ -1,6 +1,9 @@
 package com.tecno_wizard.plugingui.core;
 
+import com.tecno_wizard.plugingui.invgui.GUIClickListener;
 import com.tecno_wizard.plugingui.invgui.GUIConstructor;
+import com.tecno_wizard.plugingui.misc.MetadataHandler;
+import com.tecno_wizard.plugingui.misc.PunishmentChecker;
 import net.gravitydevelopment.updater.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,6 +20,12 @@ public class Main extends JavaPlugin {
     private static Updater updater;
     private static UpdateScheduler updateScheduler;
     private GUIConstructor constructor;
+    private Runnable updateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            runUpdaterService();
+        }
+    };
 
 
     @Override
@@ -25,7 +34,8 @@ public class Main extends JavaPlugin {
         startPluginMetrics();
         registerCommands();
         registerListeners();
-        updateScheduler = new UpdateScheduler(this);
+        registerSingletons();
+        updateScheduler = new UpdateScheduler();
         resources = new Resources(this);
         runUpdaterService();
     }
@@ -40,7 +50,12 @@ public class Main extends JavaPlugin {
     }
 
     private void registerListeners() {
+        new GUIClickListener(this);
+        new PunishmentChecker(this);
+    }
 
+    private void registerSingletons() {
+        MetadataHandler.prepare(this);
     }
 
     private void setUpConfig() {
@@ -61,6 +76,12 @@ public class Main extends JavaPlugin {
             Bukkit.getLogger().info(String.format("[%s] Plugin metrics is disabled. This will not affect the performance of PunishmentGUI.",
                     getConfig().getString("PluginPrefix")));
         }
+    }
+
+
+    @SuppressWarnings("deprecation")
+    private void startUpdaterServices() {
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, updateRunnable, 0L, 72000L);
     }
 
     protected void runUpdaterService() {

@@ -92,9 +92,6 @@ public class GUIConstructor implements CommandExecutor{
         return true;
     }
 
-    public void openPunishHistoryMenu() {
-
-    }
 
     //<editor-fold desc="Primary Menu">
     public void openPlayerPunishMenu(final OfflinePlayer toBePunished, final Player punisher, final String reason) {
@@ -191,22 +188,9 @@ public class GUIConstructor implements CommandExecutor{
 
     //</editor-fold>
 
-    private ItemStack[] convertHistoryIntoItemStackArray(PlayerFile file) {
-        List<Infraction> infractions = file.getInfractionHistory();
-        ItemStack[] stacks = new ItemStack[infractions.size()];
-        for (int i = 0; i < infractions.size(); i++) {
-            Infraction currentInfraction = infractions.get(i);
-            ItemStack itemStack = new ItemStack(Material.BOOK, 1);
-            editMetadata(itemStack, new Timestamp(currentInfraction.getDate()).toString(),
-                    GOLD + "Punishment: " + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
-                    GOLD + "Reason: " + currentInfraction.getReason(),
-                    GOLD + "Given by: "  + currentInfraction.getGivenBy() + " (At time of punishment)");
-            stacks[i] = itemStack;
-        }
-        return stacks;
-    }
 
-    private void editMetadata(ItemStack stack, String displayName, String... lore) {
+
+    public static void editMetadata(ItemStack stack, String displayName, String... lore) {
         List<String> convertedLore = Arrays.asList(lore);
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(displayName);

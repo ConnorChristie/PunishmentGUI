@@ -10,18 +10,6 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class UpdateScheduler implements Updater.UpdateCallback {
     private JavaPlugin plugin;
-    private BukkitRunnable runnable;
-    public boolean isRunning = true;
-
-    public UpdateScheduler(final Main main) {
-        plugin = main;
-        runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                main.runUpdaterService();
-            }
-        };
-    }
 
     /**
      * Called when the updater has finished working.
@@ -30,6 +18,7 @@ public class UpdateScheduler implements Updater.UpdateCallback {
      */
     @Override
     public void onFinish(Updater updater) {
+
         switch (updater.getResult()) {
             case FAIL_APIKEY:
                 Bukkit.getLogger().warning("Updater Failed: bad API key");
@@ -61,12 +50,6 @@ public class UpdateScheduler implements Updater.UpdateCallback {
             case DISABLED:
                 return;
         }
-        if(isRunning) {
-            // set to run again in 1 hour (60 mins)
-            runnable.runTaskLater(plugin, (1200 * 60));
-        }
-    }
-    public void stop() {
-        this.isRunning = false;
+
     }
 }
