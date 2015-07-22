@@ -2,6 +2,7 @@ package com.tecno_wizard.plugingui.invgui;
 
 import com.tecno_wizard.plugingui.data.Infraction;
 import com.tecno_wizard.plugingui.data.PlayerFile;
+import com.tecno_wizard.plugingui.data.PunishType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -40,33 +41,60 @@ public class GUIClickListener implements Listener {
         Inventory inv = e.getInventory();
         if (e.getInventory().getName().contains("Punish ")) {
             e.setResult(Event.Result.DENY);
-            ItemMeta meta = e.getCurrentItem().getItemMeta();
-            String punishedUUID = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0));
-            String reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(1));
+            ItemMeta meta;
+            String punishedUUID;
+            String reason;
+            boolean punishmentIsActive;
+            OfflinePlayer player;
+
+            try {
+                meta = e.getCurrentItem().getItemMeta();
+                punishedUUID = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0));
+                reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(1));
+                punishmentIsActive = meta.getLore().get(0).contains("Active");
+                player = Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID));
+                if(punishmentIsActive)
+                    e.getWhoClicked().sendMessage(ChatColor.GOLD + "Punishment is disabled");
+                else
+                    e.getWhoClicked().sendMessage(ChatColor.GOLD + "Punishment is enabled");
+            } catch (NullPointerException exception) {return;}
             if(meta == null) return;
             String displayName = meta.getDisplayName();
-            if(displayName != null) {
+            if(displayName == null) {
                 return;
             }
+            System.out.println(displayName);
             // cannot use switch, needs constant
             if (displayName.equals(GUIConstructor.WARN_DISPLAY_NAME)) {
                 closeInventoryRunnable((Player)e.getWhoClicked());
-                PunishDealer.warn((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
+                PunishDealer.warn(player, e.getWhoClicked().getName(), reason);
             } else if(displayName.equals(GUIConstructor.TEMP_BAN_DISPLAY_NAME)) {
                 closeInventoryRunnable((Player)e.getWhoClicked());
-                PunishDealer.tempBan((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
+                if(punishmentIsActive)
+                    PunishDealer.revertPunishment(player, PunishType.TEMP_BAN);
+                else
+                    PunishDealer.tempBan((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
             } else if (displayName.equals(GUIConstructor.TEMP_MUTE_DISPLAY_NAME)) {
                 closeInventoryRunnable((Player)e.getWhoClicked());
-                PunishDealer.tempMute((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
+                if(punishmentIsActive)
+                    PunishDealer.revertPunishment(player, PunishType.TEMP_MUTE);
+                else
+                    PunishDealer.tempMute((player), e.getWhoClicked().getName(), reason);
             } else if (displayName.equals(GUIConstructor.PERM_BAN_DISPLAY_NAME)) {
                 closeInventoryRunnable((Player)e.getWhoClicked());
-                PunishDealer.permBan((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
+                if(punishmentIsActive)
+                    PunishDealer.revertPunishment(player, PunishType.PERM_BAN);
+                else
+                    PunishDealer.permBan((player), e.getWhoClicked().getName(), reason);
             } else if (displayName.equals(GUIConstructor.PERM_MUTE_DISPLAY_NAME)) {
                 closeInventoryRunnable((Player)e.getWhoClicked());
-                PunishDealer.permMute((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
+                if(punishmentIsActive)
+                    PunishDealer.revertPunishment(player, PunishType.PERM_MUTE);
+                else
+                    PunishDealer.permMute((player), e.getWhoClicked().getName(), reason);
             } else if(displayName.equals(GUIConstructor.HISTORICAL_ENTRY_BUTTON_DISPLAY_NAME)) {
                 closeInventoryRunnable((Player)e.getWhoClicked());
-                openPunishHistoryMenu(Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID)), (Player) e.getWhoClicked());
+                openPunishHistoryMenu(player, (Player) e.getWhoClicked());
             }
         } else if(inv.getName().contains(RED + "History of ")) {
             e.setResult(Event.Result.DENY);

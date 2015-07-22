@@ -1,11 +1,15 @@
 package com.tecno_wizard.plugingui.core;
 
+import com.tecno_wizard.plugingui.data.Infraction;
 import com.tecno_wizard.plugingui.invgui.GUIClickListener;
 import com.tecno_wizard.plugingui.invgui.GUIConstructor;
 import com.tecno_wizard.plugingui.misc.MetadataHandler;
 import com.tecno_wizard.plugingui.misc.PunishmentChecker;
 import net.gravitydevelopment.updater.Updater;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hidendra.mcstats.Metrics;
 
@@ -35,6 +39,7 @@ public class Main extends JavaPlugin {
         registerCommands();
         registerListeners();
         registerSingletons();
+        startUpdaterServices();
         updateScheduler = new UpdateScheduler();
         resources = new Resources(this);
         runUpdaterService();
@@ -81,7 +86,8 @@ public class Main extends JavaPlugin {
 
     @SuppressWarnings("deprecation")
     private void startUpdaterServices() {
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, updateRunnable, 0L, 72000L);
+        //TODO enable for devbukkit versions
+       // Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, updateRunnable, 0L, 72000L);
     }
 
     protected void runUpdaterService() {

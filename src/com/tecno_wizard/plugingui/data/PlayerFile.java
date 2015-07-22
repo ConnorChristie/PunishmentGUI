@@ -52,7 +52,12 @@ public class PlayerFile {
     }
 
     public List<Infraction> getInfractionHistory() {
-        return (List<Infraction>) configuration.getList(HISTORY_FIELD, new ArrayList<Infraction>());
+        List<String> unconvertedData = (List<String>) configuration.getList(HISTORY_FIELD, new ArrayList<String>());
+        List<Infraction> convertedData = new ArrayList<>();
+        for (String data: unconvertedData) {
+            convertedData.add(Infraction.fromString(data));
+        }
+        return convertedData;
     }
 
     /**
@@ -74,8 +79,14 @@ public class PlayerFile {
                     if (isPunishmentActive(type)) {
                         return true;
                     } else {
-                        long seed = (long) Math.pow(getNumOfInfractions(TemporaryPunishType.valueOf(type.toString())) + 1, 2);
-                        configuration.set(type.toString(), (System.currentTimeMillis() * seed));
+                        long seed = (long) Math.pow(getNumOfInfractions(TemporaryPunishType.valueOf(type.toString())) + 1, 2)
+                                * Resources.getSeedPunishTime(TemporaryPunishType.valueOf(type.toString()));
+
+                        //DEBUG
+                        System.out.println(seed);
+                        System.out.println((System.currentTimeMillis() + seed));
+                        System.out.println(System.currentTimeMillis());
+                        configuration.set(type.toString(), (System.currentTimeMillis() + seed));
                         incrementNumOfInfractions(TemporaryPunishType.valueOf(type.toString()));
                     }
                 } else {
@@ -111,8 +122,8 @@ public class PlayerFile {
     }
 
     public void addInfraction(Infraction infraction) {
-        List list = configuration.getList(HISTORY_FIELD, new ArrayList<Infraction>());
-        list.add(infraction);
+        List list = configuration.getList(HISTORY_FIELD, new ArrayList<String>());
+        list.add(infraction.toString());
         configuration.set(HISTORY_FIELD, list);
         setPunishmentActivity(infraction.getType(), true);
     }

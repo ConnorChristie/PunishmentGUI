@@ -39,10 +39,13 @@ public class MetadataHandler {
         player.removeMetadata(MUTE_IS_ACTIVE_KEY, plugin);
         player.removeMetadata(MUTE_EXPIRATION_KEY, plugin);
         if(file.isPunishmentActive(PunishType.TEMP_MUTE)) {
+            //DEBUG
+            System.out.println("TEMP MUTE APPLIED");
             player.setMetadata(MUTE_IS_ACTIVE_KEY, new FixedMetadataValue(plugin, true));
             player.setMetadata(MUTE_EXPIRATION_KEY, new FixedMetadataValue(plugin, file.getExpirationOfTemporaryPunishment(TemporaryPunishType.TEMP_MUTE)));
             player.setMetadata(MUTE_IS_PERMANENT_KEY, new FixedMetadataValue(plugin, false));
         } else if(file.isPunishmentActive(PunishType.PERM_MUTE)) {
+            System.out.println("PERM MUTE APPLIED");
             player.setMetadata(MUTE_IS_ACTIVE_KEY, new FixedMetadataValue(plugin, true));
             player.setMetadata(MUTE_IS_PERMANENT_KEY, new FixedMetadataValue(plugin, true));
         }
@@ -59,8 +62,17 @@ public class MetadataHandler {
     }
 
     public String getMuteExpirationAsString(Player player) {
-        Long expiration = player.getMetadata(MUTE_EXPIRATION_KEY).get(0).asLong();
-        if(expiration == null) return "";
-        return new Timestamp(expiration).toString();
+        try {
+            Long expiration = player.getMetadata(MUTE_EXPIRATION_KEY).get(0).asLong();
+            if (expiration == null) return "";
+            return new Timestamp(expiration).toString();
+        } catch(IndexOutOfBoundsException exception) {return "";}
+    }
+
+    public Long getMuteExpiration(Player player) {
+        try {
+            Long expiration = player.getMetadata(MUTE_EXPIRATION_KEY).get(0).asLong();
+            return expiration;
+        } catch (IndexOutOfBoundsException exception) {return Long.MAX_VALUE;}
     }
 }

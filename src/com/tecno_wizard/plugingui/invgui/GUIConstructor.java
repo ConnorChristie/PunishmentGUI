@@ -77,7 +77,7 @@ public class GUIConstructor implements CommandExecutor{
             System.out.println(args.length);
             if (args.length > 1) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
-                if (player.hasPlayedBefore()) {
+                if (player.hasPlayedBefore() || player.isOnline()) {
                     StringBuilder builder = new StringBuilder();
                     // combine reason
                     for (int i = 1; i < args.length; i++)

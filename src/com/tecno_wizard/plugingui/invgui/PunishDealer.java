@@ -29,6 +29,8 @@ public class PunishDealer {
         file.addInfraction(new Infraction(PunishType.TEMP_MUTE, reason, System.currentTimeMillis(), punisherName));
         file.save();
         if(player.isOnline()) {
+            //DEBUG
+            System.out.println("online");
             ((Player)player).sendMessage(ChatColor.RED + "You have been temporarily muted for: " + reason + ".");
             MetadataHandler.getInstance().applyNeccesaryData((Player)player);
         }
@@ -37,6 +39,9 @@ public class PunishDealer {
     public static void permMute(OfflinePlayer player, String punisherName, String reason) {
         PlayerFile file = new PlayerFile(player.getUniqueId());
         file.addInfraction(new Infraction(PunishType.PERM_MUTE, reason, System.currentTimeMillis(), punisherName));
+        if(player.isOnline()) {
+            ((Player)player).sendMessage(ChatColor.RED + "You have been permanently muted for: \"" + reason + "\" by " + punisherName);
+        }
         file.save();
     }
 
@@ -54,7 +59,21 @@ public class PunishDealer {
         file.addInfraction(new Infraction(PunishType.PERM_BAN, reason, System.currentTimeMillis(), punisherName));
         file.save();
         if(player.isOnline()) {
-            ((Player)player).kickPlayer("You have been temporarily banned for: " + reason + ".");
+            ((Player)player).kickPlayer("You have been permanently banned for: " + reason + ".");
         }
+    }
+
+    public static void revertPunishment(OfflinePlayer player, PunishType type) {
+        PlayerFile file = new PlayerFile(player.getUniqueId());
+        file.setPunishmentActivity(type, false);
+        if(player.isOnline()) {
+            MetadataHandler.getInstance().applyNeccesaryData((Player) player);
+            switch(type) {
+                case PERM_MUTE: ((Player) player).sendMessage(ChatColor.GREEN + "You are no longer permanently muted.");
+                    break;
+                case TEMP_MUTE: ((Player) player).sendMessage(ChatColor.GREEN + "You are no longer temp muted.");
+            }
+        }
+
     }
 }
