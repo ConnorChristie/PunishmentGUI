@@ -66,13 +66,13 @@ public class PunishmentChecker implements Listener {
             if (meta.getMuteExpiration(e.getPlayer()) > System.currentTimeMillis()) {
                 e.setCancelled(true);
                 if (meta.isMutePermanent(e.getPlayer())) {
-                    e.getPlayer().sendMessage("§c§lPUNISH" +  ChatColor.DARK_RED + "You are permanently muted. " + Resources.getPunishmentMessageSuffix());
+                    Resources.sendMessage("You are permanently muted. " + Resources.getPunishmentMessageSuffix(), e.getPlayer(), ChatColor.DARK_RED);
                 } else {
-                    e.getPlayer().sendMessage("§c§lPUNISH" + ChatColor.DARK_RED + "You are muted until " + meta.getMuteExpirationAsString(e.getPlayer()));
+                    Resources.sendMessage("You are muted until " + meta.getMuteExpirationAsString(e.getPlayer()), e.getPlayer(), ChatColor.DARK_RED);
                 }
             } else {
                 meta.applyNeccesaryData(e.getPlayer());
-                e.getPlayer().sendMessage("§c§lPUNISH " + ChatColor.GREEN + "You are no longer muted.");
+                Resources.sendMessage("You are no longer muted.", e.getPlayer(), ChatColor.GREEN);
             }
         }
     }
