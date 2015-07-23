@@ -101,7 +101,7 @@ public class GUIClickListener implements Listener {
         }
     }
     public void openPunishHistoryMenu(final OfflinePlayer toBePunished, final Player punisher) {
-        final Inventory menu = Bukkit.createInventory(null, 27, RED + "History of " + toBePunished.getName());
+        final Inventory menu = Bukkit.createInventory(null, 54, RED + "History of " + toBePunished.getName());
         final PlayerFile file = new PlayerFile(toBePunished.getUniqueId());
         new BukkitRunnable(){
             @Override
