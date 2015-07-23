@@ -134,10 +134,10 @@ public class GUIClickListener implements Listener {
         for (int i = 0; i < infractions.size(); i++) {
             Infraction currentInfraction = infractions.get(i);
             ItemStack itemStack = new ItemStack(Material.BOOK, 1);
+                    GOLD + "Punishment: §c" + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
+                    GOLD + "Reason: §c" + currentInfraction.getReason(),
+                    GOLD + "Given by: §c"  + currentInfraction.getGivenBy());
             GUIConstructor.editMetadata(itemStack, new Timestamp(currentInfraction.getDate()).toString(),
-                    RED + "Punishment: §6" + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
-                    RED + "Reason: §6" + currentInfraction.getReason(),
-                    RED + "Given by: §6"  + currentInfraction.getGivenBy() + " (At time of punishment)");
             stacks[i] = itemStack;
         }
         return stacks;
