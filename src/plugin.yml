@@ -6,7 +6,7 @@ main: com.tecno_wizard.plugingui.core.Main
 commands:
   punish:
     description: 'Punishes the given player'
-    usage: '§cIncorrect usage. /punish <PlayerName> <Reason>'
+    usage: '§c§lPUNISH §6Do /punish <PlayerName> <Reason>'
     permission: 'punishment.use'
     permission-message: ''
 permissions:
