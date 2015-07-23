@@ -19,6 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -134,13 +136,16 @@ public class GUIClickListener implements Listener {
         for (int i = 0; i < infractions.size(); i++) {
             Infraction currentInfraction = infractions.get(i);
             ItemStack itemStack = new ItemStack(Material.BOOK, 1);
-                    GOLD + "Punishment: §c" + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
-                    GOLD + "Reason: §c" + currentInfraction.getReason(),
-                    GOLD + "Given by: §c"  + currentInfraction.getGivenBy(),
-                    GOLD + "Date: §c" + new Timestamp(currentInfraction.getDate()).toString());
+            GUIConstructor.editMetadata(itemStack, new Timestamp(currentInfraction.getDate()).toString(),
+                    GOLD + "Punishment: " + RED + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
+                    GOLD + "Reason: " + RED + currentInfraction.getReason(),
+                    GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
+                    GOLD + "Date: " + RED + new Timestamp(currentInfraction.getDate()).toString());
             
             stacks[i] = itemStack;
         }
-        return stacks;
+        List<ItemStack> list = Arrays.asList(stacks);
+        Collections.reverse(list);
+        return list.toArray(stacks);
     }
 }
