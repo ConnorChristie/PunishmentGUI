@@ -81,7 +81,7 @@ public class GUIConstructor implements CommandExecutor{
                     StringBuilder builder = new StringBuilder();
                     // combine reason
                     for (int i = 1; i < args.length; i++)
-                        builder.append(args[i]);
+                        builder.append(args[i] + " ");
                     // send menu
                     openPlayerPunishMenu(player, (Player) sender, builder.toString());
                 } else Resources.sendMessage("Error: that player does not exist", sender, RED);
