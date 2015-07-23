@@ -20,7 +20,7 @@ public class PunishDealer {
         file.addInfraction(new Infraction(PunishType.WARN, reason, System.currentTimeMillis(), punisherName));
         file.save();
         if(player.isOnline()) {
-            ((Player)player).sendMessage(String.format("%sYou received a warning for: %s. Continued action may result in a punishment", ChatColor.RED, reason));
+            ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You have been warned for: §6§l" + reason + " §4by §6§l" + punisherName);
         }
     }
 
@@ -31,7 +31,7 @@ public class PunishDealer {
         if(player.isOnline()) {
             //DEBUG
             System.out.println("online");
-            ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You have been temporarily muted for: §6§l" + reason + "&4.");
+            ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You have been temporarily muted for: §6§l" + reason + " §4by §6§l" + punisherName);
             MetadataHandler.getInstance().applyNeccesaryData((Player)player);
         }
     }
