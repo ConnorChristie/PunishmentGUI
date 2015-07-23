@@ -53,22 +53,22 @@ public class GUIConstructor implements CommandExecutor{
 
         warnSeed = new ItemStack(Material.PAPER, 1);
         editMetadata(warnSeed, WARN_DISPLAY_NAME,
-                GOLD + "Warn the player");
+                RED + "Warn the player");
         tempMuteSeed = new ItemStack(Material.INK_SACK, 1, (short)12);
         editMetadata(tempMuteSeed, TEMP_MUTE_DISPLAY_NAME,
-                GOLD + "Temporarily mute the player");
+                RED + "Temporarily mute the player");
         tempBanSeed = new ItemStack(Material.INK_SACK, 1, (short)1);
         editMetadata(tempBanSeed, TEMP_BAN_DISPLAY_NAME,
-                GOLD + "Temporarily ban the player");
+                RED + "Temporarily ban the player");
         permMuteSeed = new ItemStack(Material.BOOK, 1);
         editMetadata(permMuteSeed, PERM_MUTE_DISPLAY_NAME,
-                GOLD + "Permanently mute the player");
+                RED + "Permanently mute the player");
         permBanSeed = new ItemStack(Material.REDSTONE_BLOCK, 1);
         editMetadata(permBanSeed, PERM_BAN_DISPLAY_NAME,
-                GOLD + "Permanently ban the player");
+                RED + "Permanently ban the player");
         historicalEntryButtonSeed = new ItemStack(Material.BOOKSHELF);
         editMetadata(historicalEntryButtonSeed, HISTORICAL_ENTRY_BUTTON_DISPLAY_NAME,
-                GOLD + "View previous reports against this player");
+                RED + "View previous punishments against this player");
     }
 
     @Override
@@ -183,7 +183,7 @@ public class GUIConstructor implements CommandExecutor{
     }
 
     private void addPlayerHead(Inventory inv, OfflinePlayer player, String punishReason) {
-        inv.setItem(8, getPlayerHead(player, PLAYR_HEAD_DISPLAY_NAME + player.getName(), GOLD + player.getUniqueId().toString(), GOLD + punishReason));
+        inv.setItem(8, getPlayerHead(player, PLAYR_HEAD_DISPLAY_NAME + player.getName(), RED + player.getUniqueId().toString(), RED + punishReason));
     }
 
     //</editor-fold>
