@@ -54,9 +54,9 @@ public class GUIClickListener implements Listener {
                 punishmentIsActive = meta.getLore().get(0).contains("Active");
                 player = Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID));
                 if(punishmentIsActive)
-                    e.getWhoClicked().sendMessage(ChatColor.GOLD + "Punishment is disabled");
+                    e.getWhoClicked().sendMessage("§c§lPUNISH §6Punishment is disabled");
                 else
-                    e.getWhoClicked().sendMessage(ChatColor.GOLD + "Punishment is enabled");
+                    e.getWhoClicked().sendMessage("§c§lPUNISH §6Punishment is enabled");
             } catch (NullPointerException exception) {return;}
             if(meta == null) return;
             String displayName = meta.getDisplayName();
@@ -135,9 +135,9 @@ public class GUIClickListener implements Listener {
             Infraction currentInfraction = infractions.get(i);
             ItemStack itemStack = new ItemStack(Material.BOOK, 1);
             GUIConstructor.editMetadata(itemStack, new Timestamp(currentInfraction.getDate()).toString(),
-                    GOLD + "Punishment: " + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
-                    GOLD + "Reason: " + currentInfraction.getReason(),
-                    GOLD + "Given by: "  + currentInfraction.getGivenBy() + " (At time of punishment)");
+                    RED + "Punishment: §6" + currentInfraction.getType().toString().toLowerCase().replace("_", " "),
+                    RED + "Reason: §6" + currentInfraction.getReason(),
+                    RED + "Given by: §6"  + currentInfraction.getGivenBy() + " (At time of punishment)");
             stacks[i] = itemStack;
         }
         return stacks;
