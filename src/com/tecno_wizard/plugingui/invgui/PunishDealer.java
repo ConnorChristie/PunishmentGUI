@@ -31,7 +31,7 @@ public class PunishDealer {
         if(player.isOnline()) {
             //DEBUG
             System.out.println("online");
-            ((Player)player).sendMessage(ChatColor.RED + "You have been temporarily muted for: " + reason + ".");
+            ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You have been temporarily muted for: §6§l" + reason + "&4.");
             MetadataHandler.getInstance().applyNeccesaryData((Player)player);
         }
     }
@@ -40,7 +40,7 @@ public class PunishDealer {
         PlayerFile file = new PlayerFile(player.getUniqueId());
         file.addInfraction(new Infraction(PunishType.PERM_MUTE, reason, System.currentTimeMillis(), punisherName));
         if(player.isOnline()) {
-            ((Player)player).sendMessage(ChatColor.RED + "You have been permanently muted for: \"" + reason + "\" by " + punisherName);
+            ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You have been permanantly muted for: §6§l" + reason + " §4by §6§l" + punisherName);
         }
         file.save();
     }
@@ -50,7 +50,7 @@ public class PunishDealer {
         file.addInfraction(new Infraction(PunishType.TEMP_BAN, reason, System.currentTimeMillis(), punisherName));
         file.save();
         if(player.isOnline()) {
-            ((Player)player).kickPlayer("You have been temporarily banned for: " + reason + ".");
+            ((Player)player).kickPlayer("§c§lPUNISH " + ChatColor.DARK_RED + "You have been temporarily banned for: §6§l" + reason + " §4by §6§l" + punisherName);
         }
     }
 
@@ -59,7 +59,7 @@ public class PunishDealer {
         file.addInfraction(new Infraction(PunishType.PERM_BAN, reason, System.currentTimeMillis(), punisherName));
         file.save();
         if(player.isOnline()) {
-            ((Player)player).kickPlayer("You have been permanently banned for: " + reason + ".");
+            ((Player)player).kickPlayer("§c§lPUNISH " + ChatColor.DARK_RED + "You have been permanantly banned for: §6§l" + reason + " §4by §6§l" + punisherName);
         }
     }
 
@@ -69,9 +69,10 @@ public class PunishDealer {
         if(player.isOnline()) {
             MetadataHandler.getInstance().applyNeccesaryData((Player) player);
             switch(type) {
-                case PERM_MUTE: ((Player) player).sendMessage(ChatColor.GREEN + "You are no longer permanently muted.");
+                case PERM_MUTE:             ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You are no longer permanantly muted.");
                     break;
-                case TEMP_MUTE: ((Player) player).sendMessage(ChatColor.GREEN + "You are no longer temp muted.");
+                case TEMP_MUTE:             ((Player)player).sendMessage("§c§lPUNISH " + ChatColor.DARK_RED + "You are no longer temporarily muted.");
+
             }
         }
 
