@@ -17,6 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -32,13 +33,13 @@ public class GUIConstructor implements CommandExecutor
 {
 	private Main main;
 	
-	private ItemStack warnSeed;
-	private ItemStack tempMuteSeed;
-	private ItemStack tempBanSeed;
-	private ItemStack permMuteSeed;
-	private ItemStack permBanSeed;
-	private ItemStack historicalEntryButtonSeed;
-	private ItemStack historicalEntrySeed;
+	private static ItemStack warnSeed;
+	private static ItemStack tempMuteSeed;
+	private static ItemStack tempBanSeed;
+	private static ItemStack permMuteSeed;
+	private static ItemStack permBanSeed;
+	private static ItemStack historicalEntryButtonSeed;
+	private static ItemStack historicalEntrySeed;
 	
 	public GUIConstructor(Main main)
 	{
@@ -108,29 +109,7 @@ public class GUIConstructor implements CommandExecutor
 		{
 			public void run()
 			{
-				if (punisher.hasPermission(Permission.PERM_BAN.toString()))
-				{
-					addPermBans(menu, file);
-				}
-				
-				if (punisher.hasPermission(Permission.PERM_MUTE.toString()))
-				{
-					addPermMute(menu, file);
-				}
-				
-				if (punisher.hasPermission(Permission.TEMP_BAN.toString()))
-				{
-					addTempBan(menu, file);
-				}
-				
-				if (punisher.hasPermission(Permission.TEMP_MUTE.toString()))
-				{
-					addTempMute(menu, file);
-				}
-				
-				addWarn(menu);
-				addHistoryButton(menu);
-				addPlayerHead(menu, toBePunished, reason);
+				addMenuItems(menu, punisher, toBePunished, file, reason);
 				
 				new BukkitRunnable()
 				{
@@ -144,7 +123,34 @@ public class GUIConstructor implements CommandExecutor
 		}.runTaskAsynchronously(main);
 	}
 	
-	private void addPermBans(Inventory inv, PlayerFile file)
+	public static void addMenuItems(Inventory menu, Player punisher, OfflinePlayer toBePunished, PlayerFile file, String reason)
+	{
+		if (punisher.hasPermission(Permission.PERM_BAN.toString()))
+		{
+			addPermBans(menu, file);
+		}
+		
+		if (punisher.hasPermission(Permission.PERM_MUTE.toString()))
+		{
+			addPermMute(menu, file);
+		}
+		
+		if (punisher.hasPermission(Permission.TEMP_BAN.toString()))
+		{
+			addTempBan(menu, file);
+		}
+		
+		if (punisher.hasPermission(Permission.TEMP_MUTE.toString()))
+		{
+			addTempMute(menu, file);
+		}
+		
+		addWarn(menu);
+		addHistoryButton(menu);
+		addPlayerHead(menu, toBePunished, reason);
+	}
+	
+	private static void addPermBans(Inventory inv, PlayerFile file)
 	{
 		ItemStack permBan = permBanSeed.clone();
 		
@@ -163,7 +169,7 @@ public class GUIConstructor implements CommandExecutor
 		inv.setItem(15, permBan);
 	}
 	
-	private void addPermMute(Inventory inv, PlayerFile file)
+	private static void addPermMute(Inventory inv, PlayerFile file)
 	{
 		ItemStack permMute = permMuteSeed.clone();
 		
@@ -182,7 +188,7 @@ public class GUIConstructor implements CommandExecutor
 		inv.setItem(14, permMute);
 	}
 	
-	private void addTempBan(Inventory inv, PlayerFile file)
+	private static void addTempBan(Inventory inv, PlayerFile file)
 	{
 		ItemStack tempBan = tempBanSeed.clone();
 		
@@ -201,7 +207,7 @@ public class GUIConstructor implements CommandExecutor
 		inv.setItem(13, tempBan);
 	}
 	
-	private void addTempMute(Inventory inv, PlayerFile file)
+	private static void addTempMute(Inventory inv, PlayerFile file)
 	{
 		ItemStack tempMute = tempMuteSeed.clone();
 		
@@ -220,23 +226,25 @@ public class GUIConstructor implements CommandExecutor
 		inv.setItem(12, tempMute);
 	}
 	
-	private void addWarn(Inventory inv)
+	private static void addWarn(Inventory inv)
 	{
 		ItemStack warn = warnSeed.clone();
 		inv.setItem(11, warn);
 	}
 	
-	private void addHistoryButton(Inventory inv)
+	private static void addHistoryButton(Inventory inv)
 	{
 		inv.setItem(0, historicalEntryButtonSeed);
 	}
 	
-	private void addPlayerHead(Inventory inv, OfflinePlayer player, String punishReason)
+	private static void addPlayerHead(Inventory inv, OfflinePlayer player, String punishReason)
 	{
-		inv.setItem(8, getPlayerHead(player, PunishType.PLAYR_HEAD + player.getName(), RED + player.getUniqueId().toString(), RED + punishReason));
+		ItemStack item = getPlayerHead(player, PunishType.PLAYR_HEAD + player.getName(), GOLD + "Reason: " + RED + punishReason, GOLD + "UUID: " + RED + player.getUniqueId().toString());
+		
+		inv.setItem(8, item);
 	}
 	
-	private void editMetadata(ItemStack stack, PunishType displayName, String... lore)
+	private static void editMetadata(ItemStack stack, PunishType displayName, String... lore)
 	{
 		editMetadata(stack, displayName.toString(), lore);
 	}
@@ -252,7 +260,7 @@ public class GUIConstructor implements CommandExecutor
 		stack.setItemMeta(meta);
 	}
 	
-	private ItemStack getPlayerHead(OfflinePlayer player, String displayName, String... lore)
+	private static ItemStack getPlayerHead(OfflinePlayer player, String displayName, String... lore)
 	{
 		List<String> convertedLore = Arrays.asList(lore);
 		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());

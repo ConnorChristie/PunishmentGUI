@@ -10,12 +10,14 @@ import me.chiller.punishmentgui.core.Resources;
 /**
  * Created by Ethan Zeigler on 7/7/2015 for PunismentGUI.
  */
-public class Infraction implements ConfigurationSerializable
+public class Infraction implements ConfigurationSerializable, Comparable<Infraction>
 {
 	private PunishType type;
 	private String reason;
 	private Long date;
 	private String givenBy;
+	private String removedBy;
+	private boolean active;
 	
 	public Infraction(PunishType type, String reason, long date, String givenBy)
 	{
@@ -23,6 +25,8 @@ public class Infraction implements ConfigurationSerializable
 		this.reason = reason;
 		this.date = date;
 		this.givenBy = givenBy;
+		this.removedBy = "";
+		this.active = type != PunishType.WARN;
 	}
 	
 	public Infraction(Map<String, Object> map)
@@ -30,9 +34,11 @@ public class Infraction implements ConfigurationSerializable
 		type = PunishType.valueOf((String) map.get("type"));
 		reason = (String) map.get("reason");
 		givenBy = (String) map.get("given_by");
+		removedBy = (String) map.get("removed_by");
+		active = (Boolean) map.get("active");
 	}
 	
-	public long getDate()
+	public Long getDate()
 	{
 		return date;
 	}
@@ -57,9 +63,29 @@ public class Infraction implements ConfigurationSerializable
 		return givenBy;
 	}
 	
+	public String getRemovedBy()
+	{
+		return removedBy;
+	}
+	
+	public void setRemovedBy(String player)
+	{
+		this.removedBy = player;
+	}
+	
 	public void setDate(Long date)
 	{
 		this.date = date;
+	}
+	
+	public boolean isActive()
+	{
+		return active;
+	}
+	
+	public void setActive(boolean active)
+	{
+		this.active = active;
 	}
 
 	public Map<String, Object> serialize()
@@ -69,8 +95,15 @@ public class Infraction implements ConfigurationSerializable
 		map.put("type", type.name());
 		map.put("reason", reason);
 		map.put("given_by", givenBy);
+		map.put("removed_by", removedBy);
+		map.put("active", active);
 		
 		return map;
+	}
+
+	public int compareTo(Infraction other)
+	{
+		return getDate().compareTo(other.getDate());
 	}
 	
 }

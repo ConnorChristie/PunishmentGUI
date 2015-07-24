@@ -1,3 +1,4 @@
+#Time increments are in seconds
 message_prefix: '&c&lPUNISH&r'
 message_suffix: '&aUnfairly punished? Contact us on the forums!'
 messages:
@@ -9,6 +10,8 @@ messages:
   temp_mute: '%message_prefix% &4You have been temporarily muted &6(%reason%)'
   login_perm_ban: You have been permanently banned &6(%reason%)#n%message_suffix%
   login_temp_ban: You have been banned until &b%date% &6(%reason%)#n%message_suffix%
+  perm_muted: '%message_prefix% &4You are permanently muted.'
+  temp_muted: '%message_prefix% &4You are muted until &b%date%'
 time:
   ban_increment: 60
   mute_increment: 30

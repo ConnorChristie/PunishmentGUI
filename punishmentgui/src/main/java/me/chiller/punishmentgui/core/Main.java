@@ -93,7 +93,9 @@ public class Main extends JavaPlugin
 	
 	private void setUpConfig()
 	{
+		getConfig().options().header("Time increments are in seconds");
 		getConfig().options().copyDefaults(true);
+		
 		saveConfig();
 		
 		ConfigurationSerialization.registerClass(Infraction.class);

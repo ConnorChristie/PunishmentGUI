@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class Resources
 {
-	private static String DATE_FORMAT = "MM/dd/yyyy h:mm a";
+	private static String DATE_FORMAT = "MM/dd/yyyy h:mm:ss a";
 	
 	public static enum Permission
 	{

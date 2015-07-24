@@ -1,8 +1,10 @@
 package me.chiller.punishmentgui.data;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.chiller.punishmentgui.core.Main;
@@ -26,6 +28,8 @@ public class PlayerFile
 	private static final String HISTORY_FIELD = "history";
 	private static final String NUM_OF_PREVIOUS_MUTES = "offenses.mutes";
 	private static final String NUM_OF_PREVIOUS_BANS = "offenses.bans";
+	
+	private Map<Long, Infraction> infractionHistory;
 	
 	private int infractions;
 	private long banExpiration, muteExpiration;
@@ -57,22 +61,26 @@ public class PlayerFile
 		{
 			config.set("expiration.mute", muteExpiration = 0L);
 		}
+		
+		infractionHistory = obtainInfractionHistory();
 	}
 	
 	private void createRunnable(PunishType type)
 	{
 		if (type == PunishType.TEMP_BAN)
 		{
-			new BukkitRunnable()
+			banRunnable = new BukkitRunnable()
 			{
 				public void run()
 				{
 					setPunishmentActivity(PunishType.TEMP_BAN, false);
 				}
-			}.runTaskLater(Main.getInstance(), (banExpiration - System.currentTimeMillis()) / 1000 * 20);
+			};
+			
+			banRunnable.runTaskLater(Main.getInstance(), (banExpiration - System.currentTimeMillis()) / 1000 * 20);
 		} else
 		{
-			new BukkitRunnable()
+			muteRunnable = new BukkitRunnable()
 			{
 				public void run()
 				{
@@ -80,7 +88,9 @@ public class PlayerFile
 					
 					Resources.sendMessage(Messages.UNMUTE.toString(), Bukkit.getPlayer(id));
 				}
-			}.runTaskLater(Main.getInstance(), (muteExpiration - System.currentTimeMillis()) / 1000 * 20);
+			};
+			
+			muteRunnable.runTaskLater(Main.getInstance(), (muteExpiration - System.currentTimeMillis()) / 1000 * 20);
 		}
 	}
 	
@@ -137,20 +147,31 @@ public class PlayerFile
 		return Resources.getFormattedDate(expiration);
 	}
 	
-	public List<Infraction> getInfractionHistory()
+	private Map<Long, Infraction> obtainInfractionHistory()
 	{
-		List<Infraction> infractions = new ArrayList<Infraction>();
+		Map<Long, Infraction> infractions = new HashMap<Long, Infraction>();
 		ConfigurationSection history = config.getConfigurationSection(HISTORY_FIELD);
 		
-		for (String key : history.getKeys(false))
+		if (history != null)
 		{
-			Infraction infraction = (Infraction) history.get(key);
-			infraction.setDate(Long.parseLong(key));
-			
-			infractions.add(infraction);
+			for (String key : history.getKeys(false))
+			{
+				Infraction infraction = (Infraction) history.get(key);
+				infraction.setDate(Long.parseLong(key));
+				
+				infractions.put(infraction.getDate(), infraction);
+			}
 		}
 		
 		return infractions;
+	}
+	
+	public List<Infraction> getInfractionHistory()
+	{
+		List<Infraction> infracts = new ArrayList<Infraction>(infractionHistory.values());
+		Collections.sort(infracts);
+		
+		return infracts;
 	}
 	
 	/**
@@ -165,6 +186,11 @@ public class PlayerFile
 	 *         var active.
 	 */
 	public void setPunishmentActivity(PunishType type, boolean active)
+	{
+		setPunishmentActivity(type, active, null);
+	}
+	
+	public void setPunishmentActivity(PunishType type, boolean active, Player remover)
 	{
 		if (type.isTemp())
 		{
@@ -185,6 +211,14 @@ public class PlayerFile
 				if (hasInfraction(type))
 				{
 					setExpiration(type, 0);
+					
+					if (type == PunishType.TEMP_BAN)
+					{
+						banRunnable.cancel();
+					} else if (type == PunishType.TEMP_MUTE)
+					{
+						muteRunnable.cancel();
+					}
 				}
 			}
 		}
@@ -192,7 +226,11 @@ public class PlayerFile
 		if (active)
 			infractions |= type.getOrdinal();
 		else
+		{
 			infractions &= ~type.getOrdinal();
+			
+			unActivateInfraction(type, remover);
+		}
 		
 		save();
 	}
@@ -230,10 +268,28 @@ public class PlayerFile
 		}
 	}
 	
-	public void addInfraction(Infraction infraction)
+	public void saveInfraction(Infraction infraction)
 	{
 		config.set(HISTORY_FIELD + "." + infraction.getDate(), infraction);
+		infractionHistory.put(infraction.getDate(), infraction);
+		
 		setPunishmentActivity(infraction.getType(), true);
+	}
+	
+	public void unActivateInfraction(PunishType type, Player remover)
+	{
+		for (Infraction inf : infractionHistory.values())
+		{
+			if (inf.getType() == type && inf.isActive())
+			{
+				inf.setActive(false);
+				if (remover != null) inf.setRemovedBy(remover.getName());
+			}
+		}
+		
+		config.set("history", infractionHistory);
+		
+		save();
 	}
 	
 	public void save()
@@ -249,5 +305,10 @@ public class PlayerFile
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public Player getPlayer()
+	{
+		return Bukkit.getPlayer(id);
 	}
 }

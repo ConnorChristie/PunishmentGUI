@@ -21,7 +21,7 @@ public class PunishDealer
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
 		
-		file.addInfraction(new Infraction(PunishType.WARN, reason, System.currentTimeMillis(), punisherName));
+		file.saveInfraction(new Infraction(PunishType.WARN, reason, System.currentTimeMillis(), punisherName));
 		file.save();
 		
 		if (player.isOnline())
@@ -34,7 +34,7 @@ public class PunishDealer
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
 		
-		file.addInfraction(new Infraction(PunishType.TEMP_MUTE, reason, System.currentTimeMillis(), punisherName));
+		file.saveInfraction(new Infraction(PunishType.TEMP_MUTE, reason, System.currentTimeMillis(), punisherName));
 		file.save();
 		
 		if (player.isOnline())
@@ -46,7 +46,7 @@ public class PunishDealer
 	public static void permMute(OfflinePlayer player, String punisherName, String reason)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
-		file.addInfraction(new Infraction(PunishType.PERM_MUTE, reason, System.currentTimeMillis(), punisherName));
+		file.saveInfraction(new Infraction(PunishType.PERM_MUTE, reason, System.currentTimeMillis(), punisherName));
 		
 		if (player.isOnline())
 		{
@@ -60,7 +60,7 @@ public class PunishDealer
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
 		
-		file.addInfraction(new Infraction(PunishType.TEMP_BAN, reason, System.currentTimeMillis(), punisherName));
+		file.saveInfraction(new Infraction(PunishType.TEMP_BAN, reason, System.currentTimeMillis(), punisherName));
 		file.save();
 		
 		if (player.isOnline())
@@ -73,7 +73,7 @@ public class PunishDealer
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
 		
-		file.addInfraction(new Infraction(PunishType.PERM_BAN, reason, System.currentTimeMillis(), punisherName));
+		file.saveInfraction(new Infraction(PunishType.PERM_BAN, reason, System.currentTimeMillis(), punisherName));
 		file.save();
 		
 		if (player.isOnline())
@@ -82,11 +82,11 @@ public class PunishDealer
 		}
 	}
 	
-	public static void revertPunishment(OfflinePlayer player, PunishType type)
+	public static void revertPunishment(OfflinePlayer player, PunishType type, Player remover)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
 		
-		file.setPunishmentActivity(type, false);
+		file.setPunishmentActivity(type, false, remover);
 		
 		if (player.isOnline())
 		{

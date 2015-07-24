@@ -21,7 +21,7 @@ public enum PunishType
 	//In here because they are all in one place, easy to access
 	HISTORICAL_ENTRY(GOLD + "Previous Reports", "", new ItemStack(Material.BOOK, 1), false),
 	PLAYR_HEAD(GOLD + "Punish: ", "", null, false),
-	ACTIVE_TAG(RED + "Currently Active", "", null, false);
+	ACTIVE_TAG(GREEN + "Currently Active", "", null, false);
 	
 	private String displayName;
 	private String plural;

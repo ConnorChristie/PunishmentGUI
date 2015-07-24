@@ -15,6 +15,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -33,6 +34,9 @@ import static org.bukkit.ChatColor.*;
 public class GUIClickListener implements Listener
 {
 	private Main main;
+	private PlayerFile file;
+	
+	private Inventory mainMenu;
 	
 	public GUIClickListener(Main main)
 	{
@@ -42,87 +46,98 @@ public class GUIClickListener implements Listener
 	}
 	
 	@EventHandler
-	public void onGUIClick(InventoryClickEvent e)
+	public void onGUIOpen(InventoryOpenEvent e)
+	{
+		if (e.getInventory().getName().contains("Punish "))
+		{
+			mainMenu = e.getInventory();
+		}
+	}
+	
+	@EventHandler
+	public void onGUIClick(final InventoryClickEvent e)
 	{
 		Inventory inv = e.getInventory();
 		
-		if (e.getInventory().getName().contains("Punish "))
+		if (inv.getName().contains("Punish "))
 		{
 			e.setResult(Event.Result.DENY);
 			
-			ItemMeta meta;
+			if (e == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) return;
 			
-			String punishedUUID;
-			String reason;
+			ItemMeta meta = e.getCurrentItem().getItemMeta();
 			
-			OfflinePlayer player;
-			boolean isPunishmentActive;
+			String reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0)).replace("Reason: ", "");
+			UUID punishedUUID = UUID.fromString(ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(1)).replace("UUID: ", ""));
 			
-			try
-			{
-				meta = e.getCurrentItem().getItemMeta();
-				
-				punishedUUID = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0));
-				reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(1));
-				isPunishmentActive = meta.getLore().get(0).contains("Active");
-				
-				player = Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID));
-				
-				if (isPunishmentActive)
-					e.getWhoClicked().sendMessage("§c§lPUNISH §6Punishment is disabled");
-				else
-					e.getWhoClicked().sendMessage("§c§lPUNISH §6Punishment is enabled");
-			} catch (NullPointerException exception)
-			{
-				return;
-			}
+			Player player = Bukkit.getPlayer(punishedUUID);
+			PlayerFile file = Main.getInstance().getPlayerFile(punishedUUID);
 			
 			String displayName = meta.getDisplayName();
-			PunishType name = PunishType.value(displayName);
+			PunishType type = PunishType.value(displayName);
 			
-			if (displayName == null || name == null) return;
+			if (displayName == null || type == null) return;
 			
-			switch (name)
+			switch (type)
 			{
 				case WARN:
-					closeInventoryRunnable((Player) e.getWhoClicked());
 					PunishDealer.warn(player, e.getWhoClicked().getName(), reason);
 					
 					break;
 				case TEMP_BAN:
-					closeInventoryRunnable((Player) e.getWhoClicked());
-					
-					if (isPunishmentActive)
-						PunishDealer.revertPunishment(player, PunishType.TEMP_BAN);
+					if (file.hasInfraction(type))
+						PunishDealer.revertPunishment(player, PunishType.TEMP_BAN, (Player) e.getWhoClicked());
 					else
-						PunishDealer.tempBan((Bukkit.getOfflinePlayer(UUID.fromString(punishedUUID))), e.getWhoClicked().getName(), reason);
+					{
+						if (file.hasInfraction(PunishType.PERM_BAN))
+						{
+							file.setPunishmentActivity(PunishType.PERM_BAN, false);
+						}
+						
+						PunishDealer.tempBan(player, e.getWhoClicked().getName(), reason);
+					}
 					
 					break;
 				case TEMP_MUTE:
-					closeInventoryRunnable((Player) e.getWhoClicked());
-					
-					if (isPunishmentActive)
-						PunishDealer.revertPunishment(player, PunishType.TEMP_MUTE);
+					if (file.hasInfraction(type))
+						PunishDealer.revertPunishment(player, PunishType.TEMP_MUTE, (Player) e.getWhoClicked());
 					else
-						PunishDealer.tempMute((player), e.getWhoClicked().getName(), reason);
+					{
+						if (file.hasInfraction(PunishType.PERM_MUTE))
+						{
+							file.setPunishmentActivity(PunishType.PERM_MUTE, false);
+						}
+						
+						PunishDealer.tempMute(player, e.getWhoClicked().getName(), reason);
+					}
 					
 					break;
 				case PERM_BAN:
-					closeInventoryRunnable((Player) e.getWhoClicked());
-					
-					if (isPunishmentActive)
-						PunishDealer.revertPunishment(player, PunishType.PERM_BAN);
+					if (file.hasInfraction(type))
+						PunishDealer.revertPunishment(player, PunishType.PERM_BAN, (Player) e.getWhoClicked());
 					else
-						PunishDealer.permBan((player), e.getWhoClicked().getName(), reason);
+					{
+						if (file.hasInfraction(PunishType.TEMP_BAN))
+						{
+							file.setPunishmentActivity(PunishType.TEMP_BAN, false);
+						}
+						
+						PunishDealer.permBan(player, e.getWhoClicked().getName(), reason);
+					}
 					
 					break;
 				case PERM_MUTE:
-					closeInventoryRunnable((Player) e.getWhoClicked());
-					
-					if (isPunishmentActive)
-						PunishDealer.revertPunishment(player, PunishType.PERM_MUTE);
+					if (file.hasInfraction(type))
+						PunishDealer.revertPunishment(player, PunishType.PERM_MUTE, (Player) e.getWhoClicked());
 					else
-						PunishDealer.permMute((player), e.getWhoClicked().getName(), reason);
+					{
+						if (file.hasInfraction(PunishType.TEMP_MUTE))
+						{
+							file.setPunishmentActivity(PunishType.TEMP_MUTE, false);
+						}
+						
+						PunishDealer.permMute(player, e.getWhoClicked().getName(), reason);
+					}
 					
 					break;
 				case HISTORICAL_ENTRY:
@@ -132,23 +147,56 @@ public class GUIClickListener implements Listener
 					break;
 				default: break;
 			}
-		} else if (inv.getName().contains(RED + "History of "))
+			
+			refreshMainMenu(inv, (Player) e.getWhoClicked(), player, file, reason);
+		} else if (inv.getName().contains("History of "))
 		{
 			e.setResult(Event.Result.DENY);
+			
+			if (e == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) return;
+			
+			if (e.getCurrentItem().getType() == Material.ARROW)
+			{
+				closeInventoryRunnable((Player) e.getWhoClicked());
+				
+				new BukkitRunnable()
+				{
+					public void run()
+					{
+						e.getWhoClicked().openInventory(mainMenu);
+					}
+				}.runTaskLater(main, 3);
+			} else
+			{
+				List<Infraction> infractions = file.getInfractionHistory();
+				Infraction infraction = infractions.get(infractions.size() - 1 - e.getSlot());
+				
+				if (infraction.isActive())
+				{
+					PunishDealer.revertPunishment(file.getPlayer(), infraction.getType(), (Player) e.getWhoClicked());
+				}
+				
+				refreshHistoryMenu(inv);
+			}
 		}
+	}
+	
+	private void refreshMainMenu(Inventory menu, Player punisher, OfflinePlayer toBePunished, PlayerFile file, String reason)
+	{
+		menu.clear();
+		GUIConstructor.addMenuItems(menu, punisher, toBePunished, file, reason);
 	}
 	
 	public void openPunishHistoryMenu(final OfflinePlayer toBePunished, final Player punisher)
 	{
 		final Inventory menu = Bukkit.createInventory(null, 54, StringUtils.abbreviate(DARK_RED + "History of " + toBePunished.getName(), 32));
-		final PlayerFile file = main.getPlayerFile(toBePunished.getUniqueId());
+		file = main.getPlayerFile(toBePunished.getUniqueId());
 		
 		new BukkitRunnable()
 		{
 			public void run()
 			{
-				ItemStack[] stacks = convertHistoryIntoItemStackArray(file, menu);
-				menu.addItem(stacks);
+				menu.addItem(convertHistoryIntoItemStackArray(menu));
 				
 				new BukkitRunnable()
 				{
@@ -172,7 +220,7 @@ public class GUIClickListener implements Listener
 		}.runTaskLater(main, 1);
 	}
 	
-	private ItemStack[] convertHistoryIntoItemStackArray(PlayerFile file, Inventory inv)
+	private ItemStack[] convertHistoryIntoItemStackArray(Inventory inv)
 	{
 		List<Infraction> infractions = file.getInfractionHistory();
 		List<ItemStack> infractionList = new ArrayList<ItemStack>();
@@ -185,9 +233,22 @@ public class GUIClickListener implements Listener
 				Infraction currentInfraction = infractions.get(i);
 				ItemStack itemStack = currentInfraction.getType().getItem().clone();
 				
-				GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
-						GOLD + "Reason: " + RED + currentInfraction.getReason(),
-						GOLD + "Given by: " + RED + currentInfraction.getGivenBy(), GOLD + "Date: " + RED + currentInfraction.getDateString());
+				if (currentInfraction.getRemovedBy().isEmpty())
+				{
+					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
+							GOLD + "Reason: " + RED + currentInfraction.getReason(),
+							GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
+							GOLD + "Date: " + RED + currentInfraction.getDateString());
+				} else
+				{
+					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
+							GOLD + "Reason: " + RED + currentInfraction.getReason(),
+							GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
+							GOLD + "Removed by: " + RED + currentInfraction.getRemovedBy(),
+							GOLD + "Date: " + RED + currentInfraction.getDateString());
+				}
+				
+				if (currentInfraction.isActive()) itemStack = GUIConstructor.addGlow(itemStack);
 						
 				infractionList.add(itemStack);
 			}
@@ -204,8 +265,19 @@ public class GUIClickListener implements Listener
 			inv.setItem(inv.getSize() - 2, nextPage);
 		}
 		
+		ItemStack back = new ItemStack(Material.ARROW, 1);
+		GUIConstructor.editMetadata(back, ChatColor.GREEN + "Back to Main Menu");
+		
+		inv.setItem(inv.getSize() - 1, back);
+		
 		Collections.reverse(infractionList);
 		
 		return infractionList.toArray(new ItemStack[infractionList.size()]);
+	}
+	
+	private void refreshHistoryMenu(Inventory inv)
+	{
+		inv.clear();
+		inv.addItem(convertHistoryIntoItemStackArray(inv));
 	}
 }
