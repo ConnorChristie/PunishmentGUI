@@ -7,7 +7,6 @@ import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
 
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -26,7 +25,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Messages.WARN.replace("%reason%", reason), ((Player) player));
+			Resources.sendMessage(Messages.WARN.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
 		}
 	}
 	
@@ -39,7 +38,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Resources.Messages.TEMP_MUTE.replace("%reason%", reason), ((Player) player));
+			Resources.sendMessage(Resources.Messages.TEMP_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
 		}
 	}
 	
@@ -50,7 +49,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Resources.Messages.PERM_MUTE.replace("%reason%", reason), ((Player) player));
+			Resources.sendMessage(Resources.Messages.PERM_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
 		}
 		
 		file.save();
@@ -65,7 +64,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Resources.Messages.TEMP_BAN.replace("%reason%", reason));
+			((Player) player).kickPlayer(Resources.Messages.TEMP_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
 		}
 	}
 	
@@ -78,7 +77,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Resources.Messages.PERM_BAN.replace("%reason%", reason));
+			((Player) player).kickPlayer(Resources.Messages.PERM_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
 		}
 	}
 	

@@ -40,11 +40,11 @@ public class Resources
 		MESSAGE_PREFIX("%message_prefix%", "&c&lPUNISH&r"),
 		MESSAGE_SUFFIX("%message_suffix%", "&aUnfairly punished? Contact us on the forums!"),
 		
-		WARN(     "", "%message_prefix% &4You have been warned &6(%reason%)"),
-		PERM_BAN( "", "%message_prefix% &4You have been permanantly banned &6(%reason%)"),
-		PERM_MUTE("", "%message_prefix% &4You have been permanantly muted &6(%reason%)"),
-		TEMP_BAN( "", "%message_prefix% &4You have been temporarily banned &6(%reason%)"),
-		TEMP_MUTE("", "%message_prefix% &4You have been temporarily muted &6(%reason%)"),
+		WARN(     "", "%message_prefix% &4You have been warned &6(%reason%) &4by &6%punisher%"),
+		PERM_BAN( "", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%"),
+		PERM_MUTE("", "%message_prefix% &4You have been permanantly muted &6(%reason%) &4by &6%punisher%"),
+		TEMP_BAN( "", "%message_prefix% &4You have been temporarily banned &6(%reason%) &4by &6%punisher%"),
+		TEMP_MUTE("", "%message_prefix% &4You have been temporarily muted &6(%reason%) &4by &6%punisher%"),
 		
 		UNMUTE(    "", "%message_prefix% &aYou are no longer muted."),
 		PERM_MUTED("", "%message_prefix% &4You are permanently muted."),

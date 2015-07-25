@@ -1,13 +1,17 @@
-#Time increments are in seconds
+# Time increments are in seconds
 message_prefix: '&c&lPUNISH&r'
 message_suffix: '&aUnfairly punished? Contact us on the forums!'
 messages:
-  warn: '%message_prefix% &4You have been warned &6(%reason%)'
+  warn: '%message_prefix% &4You have been warned &6(%reason%) &4by &6%punisher%'
   unmute: '%message_prefix% &aYou are no longer muted.'
-  perm_ban: '%message_prefix% &4You have been permanantly banned &6(%reason%)'
-  perm_mute: '%message_prefix% &4You have been permanantly muted &6(%reason%)'
-  temp_ban: '%message_prefix% &4You have been temporarily banned &6(%reason%)'
-  temp_mute: '%message_prefix% &4You have been temporarily muted &6(%reason%)'
+  perm_ban: '%message_prefix% &4You have been permanantly banned &6(%reason%) &4by
+    &6%punisher%'
+  perm_mute: '%message_prefix% &4You have been permanantly muted &6(%reason%) &4by
+    &6%punisher%'
+  temp_ban: '%message_prefix% &4You have been temporarily banned &6(%reason%) &4by
+    &6%punisher%'
+  temp_mute: '%message_prefix% &4You have been temporarily muted &6(%reason%) &4by
+    &6%punisher%'
   login_perm_ban: You have been permanently banned &6(%reason%)#n%message_suffix%
   login_temp_ban: You have been banned until &b%date% &6(%reason%)#n%message_suffix%
   perm_muted: '%message_prefix% &4You are permanently muted.'
