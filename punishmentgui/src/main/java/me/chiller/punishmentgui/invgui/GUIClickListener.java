@@ -263,7 +263,7 @@ public class GUIClickListener implements Listener
 				}
 				
 				if (currentInfraction.isActive()) itemStack = GUIConstructor.addGlow(itemStack);
-						
+				
 				infractionList.add(itemStack);
 			}
 		}
