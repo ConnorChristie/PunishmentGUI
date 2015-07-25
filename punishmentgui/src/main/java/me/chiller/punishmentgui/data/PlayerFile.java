@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.chiller.punishmentgui.core.Main;
-import me.chiller.punishmentgui.util.Resources;
-import me.chiller.punishmentgui.util.Resources.Messages;
-import me.chiller.punishmentgui.util.Resources.Times;
+import me.chiller.punishmentgui.resources.Message;
+import me.chiller.punishmentgui.resources.Time;
+import me.chiller.punishmentgui.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class PlayerFile
 					
 					if (player.isOnline())
 					{
-						Resources.sendMessage(Messages.UNMUTE.toString(), (Player) player);
+						Util.sendMessage(Message.UNMUTE.toString(), (Player) player);
 					}
 				}
 			};
@@ -162,7 +162,7 @@ public class PlayerFile
 		
 		long expiration = type == PunishType.TEMP_BAN ? banExpiration : muteExpiration;
 		
-		return Resources.getFormattedDate(expiration);
+		return Util.getFormattedDate(expiration);
 	}
 	
 	private Map<Long, Infraction> obtainInfractionHistory()
@@ -219,7 +219,7 @@ public class PlayerFile
 				// activate
 				if (!hasInfraction(type))
 				{
-					setExpiration(type, type == PunishType.TEMP_BAN ? Times.BAN.getTime(getNumOfInfractions(type)) : Times.MUTE.getTime(getNumOfInfractions(type)));
+					setExpiration(type, type == PunishType.TEMP_BAN ? Time.BAN.getTime(getNumOfInfractions(type)) : Time.MUTE.getTime(getNumOfInfractions(type)));
 					incrementNumOfInfractions(type);
 					
 					// Create runnable
@@ -244,8 +244,9 @@ public class PlayerFile
 		}
 		
 		if (active)
+		{
 			infractions |= type.getOrdinal();
-		else
+		} else
 		{
 			infractions &= ~type.getOrdinal();
 			
@@ -258,34 +259,25 @@ public class PlayerFile
 	private void setExpiration(PunishType type, long expiration)
 	{
 		if (type == PunishType.TEMP_BAN)
-		{
 			banExpiration = expiration;
-		} else
-		{
+		else
 			muteExpiration = expiration;
-		}
 	}
 	
 	public int getNumOfInfractions(PunishType type)
 	{
 		if (type == PunishType.TEMP_BAN)
-		{
 			return config.getInt(NUM_OF_PREVIOUS_BANS, 0);
-		} else
-		{
+		else
 			return config.getInt(NUM_OF_PREVIOUS_MUTES, 0);
-		}
 	}
 	
 	private void incrementNumOfInfractions(PunishType type)
 	{
 		if (type == PunishType.TEMP_BAN)
-		{
 			config.set(NUM_OF_PREVIOUS_BANS, config.getInt(NUM_OF_PREVIOUS_BANS, 0) + 1);
-		} else
-		{
+		else
 			config.set(NUM_OF_PREVIOUS_MUTES, config.getInt(NUM_OF_PREVIOUS_MUTES, 0) + 1);
-		}
 	}
 	
 	public void saveInfraction(Infraction infraction)

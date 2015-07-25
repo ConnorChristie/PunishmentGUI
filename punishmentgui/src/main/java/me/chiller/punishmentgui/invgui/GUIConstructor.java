@@ -3,8 +3,8 @@ package me.chiller.punishmentgui.invgui;
 import me.chiller.punishmentgui.core.Main;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
-import me.chiller.punishmentgui.util.Resources;
-import me.chiller.punishmentgui.util.Resources.Permission;
+import me.chiller.punishmentgui.resources.Permission;
+import me.chiller.punishmentgui.util.Util;
 
 import org.bukkit.Bukkit;
 
@@ -90,17 +90,17 @@ public class GUIConstructor implements CommandExecutor
 							openPlayerPunishMenu(pl, player, builder.toString());
 						} else
 						{
-							Resources.sendMessage("Error: that player does not exist", player, RED);
+							Util.sendMessage("Error: that player does not exist", player, RED);
 						}
 					}
 				} else
 				{
-					Resources.sendMessage("You do not have permission to do that!", sender, RED);
+					Util.sendMessage("You do not have permission to do that!", sender, RED);
 				}
 			}
 		} else
 		{
-			Resources.sendMessage("You can only do this as a player!", sender, RED);
+			Util.sendMessage("You can only do this as a player!", sender, RED);
 		}
 		
 		return true;

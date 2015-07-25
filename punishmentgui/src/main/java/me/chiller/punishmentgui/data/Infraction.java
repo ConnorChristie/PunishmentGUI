@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import me.chiller.punishmentgui.util.Resources;
+import me.chiller.punishmentgui.util.Util;
 
 /**
  * Created by Ethan Zeigler, edited by Chiller on 7/7/2015 for PunismentGUI.
@@ -54,7 +54,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 	
 	public String getDateString()
 	{
-		return Resources.getFormattedDate(getDate());
+		return Util.getFormattedDate(getDate());
 	}
 	
 	public String getReason()

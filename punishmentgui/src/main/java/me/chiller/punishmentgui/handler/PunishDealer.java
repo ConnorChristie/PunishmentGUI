@@ -4,8 +4,8 @@ import me.chiller.punishmentgui.core.Main;
 import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
-import me.chiller.punishmentgui.util.Resources;
-import me.chiller.punishmentgui.util.Resources.Messages;
+import me.chiller.punishmentgui.resources.Message;
+import me.chiller.punishmentgui.util.Util;
 
 import java.util.UUID;
 
@@ -27,7 +27,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Messages.WARN.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendMessage(Message.WARN.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
 		}
 	}
 	
@@ -40,8 +40,8 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Resources.Messages.TEMP_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
-			Resources.sendSuffix((Player) player);
+			Util.sendMessage(Message.TEMP_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendSuffix((Player) player);
 		}
 	}
 	
@@ -52,8 +52,8 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Resources.Messages.PERM_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
-			Resources.sendSuffix((Player) player);
+			Util.sendMessage(Message.PERM_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendSuffix((Player) player);
 		}
 		
 		file.save();
@@ -68,7 +68,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Resources.Messages.TEMP_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
+			((Player) player).kickPlayer(Message.TEMP_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Resources.Messages.PERM_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
+			((Player) player).kickPlayer(Message.PERM_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Resources.sendMessage(Messages.UNMUTE.toString(), (Player) player);
+			Util.sendMessage(Message.UNMUTE.toString(), (Player) player);
 		}
 	}
 }

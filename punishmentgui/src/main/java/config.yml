@@ -22,3 +22,4 @@ messages:
 time:
   ban_increment: 240
   mute_increment: 120
+date_format: 'MM/dd/yyyy h:mm:ss a'

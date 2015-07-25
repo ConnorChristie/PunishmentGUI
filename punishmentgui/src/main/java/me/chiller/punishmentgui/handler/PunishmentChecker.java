@@ -4,8 +4,8 @@ import me.chiller.punishmentgui.core.Main;
 import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
-import me.chiller.punishmentgui.util.Resources;
-import me.chiller.punishmentgui.util.Resources.Messages;
+import me.chiller.punishmentgui.resources.Message;
+import me.chiller.punishmentgui.util.Util;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,10 +40,10 @@ public class PunishmentChecker implements Listener
 				
 				if (infraction != null)
 				{
-					event.setKickMessage(Messages.LOGIN_PERM_BAN.replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()));
+					event.setKickMessage(Message.LOGIN_PERM_BAN.replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()));
 				} else
 				{
-					event.setKickMessage("You have been banned for an unknown reason.\n" + Messages.MESSAGE_SUFFIX);
+					event.setKickMessage("You have been banned for an unknown reason.\n" + Message.MESSAGE_SUFFIX);
 				}
 			} else
 			{
@@ -51,10 +51,10 @@ public class PunishmentChecker implements Listener
 				
 				if (infraction != null)
 				{
-					event.setKickMessage(Messages.LOGIN_TEMP_BAN.replace("%date%", file.getExpiration(infraction.getType())).replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()));
+					event.setKickMessage(Message.LOGIN_TEMP_BAN.replace("%date%", file.getExpiration(infraction.getType())).replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()));
 				} else
 				{
-					event.setKickMessage("You have been banned for an unknown reason and an undeclared amount of time.\n" + Messages.MESSAGE_SUFFIX);
+					event.setKickMessage("You have been banned for an unknown reason and an undeclared amount of time.\n" + Message.MESSAGE_SUFFIX);
 				}
 			}
 		}
@@ -75,8 +75,8 @@ public class PunishmentChecker implements Listener
 				
 				if (infraction != null)
 				{
-					Resources.sendMessage(Messages.TEMP_MUTED.replace("%date%", file.getExpiration(PunishType.TEMP_MUTE)).replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()), e.getPlayer());
-					Resources.sendSuffix(e.getPlayer());
+					Util.sendMessage(Message.TEMP_MUTED.replace("%date%", file.getExpiration(PunishType.TEMP_MUTE)).replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()), e.getPlayer());
+					Util.sendSuffix(e.getPlayer());
 				}
 			} else if (file.isPunishmentActive(PunishType.PERM_MUTE))
 			{
@@ -84,8 +84,8 @@ public class PunishmentChecker implements Listener
 				
 				if (infraction != null)
 				{
-					Resources.sendMessage(Messages.PERM_MUTED.toString().replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()), e.getPlayer());
-					Resources.sendSuffix(e.getPlayer());
+					Util.sendMessage(Message.PERM_MUTED.toString().replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()), e.getPlayer());
+					Util.sendSuffix(e.getPlayer());
 				}
 			}
 		}
