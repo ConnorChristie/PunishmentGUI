@@ -257,7 +257,7 @@ public class GUIClickListener implements Listener
 		//Greater than
 		if (infractions.size() > inv.getSize() - 2)
 		{
-			//Add next page button
+			//Add next page button 
 			
 			ItemStack nextPage = new ItemStack(Material.PAPER, 1);
 			GUIConstructor.editMetadata(nextPage, ChatColor.GREEN + "Next Page");
