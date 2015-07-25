@@ -3,6 +3,7 @@ package me.chiller.punishmentgui.invgui;
 import me.chiller.punishmentgui.core.Main;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
+import me.chiller.punishmentgui.resources.Message;
 import me.chiller.punishmentgui.resources.Permission;
 import me.chiller.punishmentgui.util.Util;
 
@@ -80,27 +81,33 @@ public class GUIConstructor implements CommandExecutor
 						
 						if (pl.hasPlayedBefore() || pl.isOnline())
 						{
-							StringBuilder builder = new StringBuilder();
-							
-							// Combine reason
-							for (int i = 1; i < args.length; i++)
-								builder.append((i == 1 ? "" : " ") + args[i]);
+							if (pl.isOnline() && !pl.getPlayer().hasPermission(Permission.PUNISH_PROTECTED.toString()))
+							{
+								StringBuilder builder = new StringBuilder();
 								
-							// Send menu
-							openPlayerPunishMenu(pl, player, builder.toString());
+								// Combine reason
+								for (int i = 1; i < args.length; i++)
+									builder.append((i == 1 ? "" : " ") + args[i]);
+								
+								// Send menu
+								openPlayerPunishMenu(pl, player, builder.toString());
+							} else
+							{
+								Util.sendMessage(Message.NOT_PUNISHABLE.replace("%punished%", pl.getName()), player);
+							}
 						} else
 						{
-							Util.sendMessage("That player does not exist!", player, RED);
+							Util.sendMessage("That player does not exist!", player, DARK_RED);
 						}
 					}
 				} else
 				{
-					Util.sendMessage("You do not have permission to do that!", sender, RED);
+					Util.sendMessage("You do not have permission to do that!", sender, DARK_RED);
 				}
 			}
 		} else
 		{
-			Util.sendMessage("You can only do this as a player!", sender, RED);
+			Util.sendMessage("You can only do this as a player!", sender, DARK_RED);
 		}
 		
 		return true;
@@ -109,7 +116,7 @@ public class GUIConstructor implements CommandExecutor
 	public void openPlayerPunishMenu(final OfflinePlayer toBePunished, final Player punisher, final String reason)
 	{
 		final PlayerFile file = main.getPlayerFile(toBePunished.getUniqueId());
-		final Inventory menu = Bukkit.createInventory(null, 18, DARK_RED + "Punish " + toBePunished.getName());
+		final Inventory menu = Bukkit.createInventory(null, 36, DARK_RED + "Punish " + toBePunished.getName());
 		
 		new BukkitRunnable()
 		{
@@ -172,7 +179,7 @@ public class GUIConstructor implements CommandExecutor
 			permBan = addGlow(permBan);
 		}
 		
-		inv.setItem(15, permBan);
+		inv.setItem(24, permBan);
 	}
 	
 	private static void addPermMute(Inventory inv, PlayerFile file)
@@ -191,7 +198,7 @@ public class GUIConstructor implements CommandExecutor
 			permMute = addGlow(permMute);
 		}
 		
-		inv.setItem(14, permMute);
+		inv.setItem(23, permMute);
 	}
 	
 	private static void addTempBan(Inventory inv, PlayerFile file)
@@ -210,7 +217,7 @@ public class GUIConstructor implements CommandExecutor
 			tempBan = addGlow(tempBan);
 		}
 		
-		inv.setItem(13, tempBan);
+		inv.setItem(22, tempBan);
 	}
 	
 	private static void addTempMute(Inventory inv, PlayerFile file)
@@ -229,13 +236,13 @@ public class GUIConstructor implements CommandExecutor
 			tempMute = addGlow(tempMute);
 		}
 		
-		inv.setItem(12, tempMute);
+		inv.setItem(21, tempMute);
 	}
 	
 	private static void addWarn(Inventory inv)
 	{
 		ItemStack warn = warnSeed.clone();
-		inv.setItem(11, warn);
+		inv.setItem(20, warn);
 	}
 	
 	private static void addHistoryButton(Inventory inv)
