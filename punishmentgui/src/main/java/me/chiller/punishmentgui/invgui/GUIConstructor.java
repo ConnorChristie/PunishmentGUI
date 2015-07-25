@@ -109,7 +109,7 @@ public class GUIConstructor implements CommandExecutor
 	public void openPlayerPunishMenu(final OfflinePlayer toBePunished, final Player punisher, final String reason)
 	{
 		final PlayerFile file = main.getPlayerFile(toBePunished.getUniqueId());
-		final Inventory menu = Bukkit.createInventory(null, 18, DARK_RED + "Punish " + toBePunished.getName());
+		final Inventory menu = Bukkit.createInventory(null, 36, DARK_RED + "Punish " + toBePunished.getName());
 		
 		new BukkitRunnable()
 		{
@@ -172,7 +172,7 @@ public class GUIConstructor implements CommandExecutor
 			permBan = addGlow(permBan);
 		}
 		
-		inv.setItem(15, permBan);
+		inv.setItem(24, permBan);
 	}
 	
 	private static void addPermMute(Inventory inv, PlayerFile file)
@@ -191,7 +191,7 @@ public class GUIConstructor implements CommandExecutor
 			permMute = addGlow(permMute);
 		}
 		
-		inv.setItem(14, permMute);
+		inv.setItem(23, permMute);
 	}
 	
 	private static void addTempBan(Inventory inv, PlayerFile file)
@@ -210,7 +210,7 @@ public class GUIConstructor implements CommandExecutor
 			tempBan = addGlow(tempBan);
 		}
 		
-		inv.setItem(13, tempBan);
+		inv.setItem(22, tempBan);
 	}
 	
 	private static void addTempMute(Inventory inv, PlayerFile file)
@@ -229,13 +229,13 @@ public class GUIConstructor implements CommandExecutor
 			tempMute = addGlow(tempMute);
 		}
 		
-		inv.setItem(12, tempMute);
+		inv.setItem(21, tempMute);
 	}
 	
 	private static void addWarn(Inventory inv)
 	{
 		ItemStack warn = warnSeed.clone();
-		inv.setItem(11, warn);
+		inv.setItem(20, warn);
 	}
 	
 	private static void addHistoryButton(Inventory inv)
