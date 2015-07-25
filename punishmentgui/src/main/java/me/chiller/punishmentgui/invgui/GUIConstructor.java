@@ -90,7 +90,7 @@ public class GUIConstructor implements CommandExecutor
 							openPlayerPunishMenu(pl, player, builder.toString());
 						} else
 						{
-							Util.sendMessage("Error: that player does not exist", player, RED);
+							Util.sendMessage("That player does not exist!", player, RED);
 						}
 					}
 				} else

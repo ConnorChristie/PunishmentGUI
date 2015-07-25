@@ -236,7 +236,7 @@ public class GUIClickListener implements Listener
 		List<ItemStack> infractionList = new ArrayList<ItemStack>();
 		
 		//Save room for back button and next page
-		for (int i = 0; i < inv.getSize() - 2; i++)
+		for (int i = 0; i < inv.getSize() - 1; i++)
 		{
 			if (i < infractions.size())
 			{
@@ -268,6 +268,7 @@ public class GUIClickListener implements Listener
 			}
 		}
 		
+		/*
 		//Greater than
 		if (infractions.size() > inv.getSize() - 2)
 		{
@@ -278,6 +279,7 @@ public class GUIClickListener implements Listener
 			
 			inv.setItem(inv.getSize() - 2, nextPage);
 		}
+		*/
 		
 		ItemStack back = new ItemStack(Material.ARROW, 1);
 		GUIConstructor.editMetadata(back, ChatColor.GREEN + "Back to Main Menu");
