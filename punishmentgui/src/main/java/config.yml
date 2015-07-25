@@ -16,6 +16,7 @@ messages:
     &4by &6%punisher%#n%message_suffix%'
   login_temp_ban: '%message_prefix% &4You have been banned until &b%date% &6(%reason%)
     &4by &6%punisher%#n%message_suffix%'
+  not_punishable: '%message_prefix% &4You are not allowed to punish &6%punished%'
   perm_muted: '%message_prefix% &4You are permanently muted for &6%reason% &4by &3%punisher%'
   temp_muted: '%message_prefix% &4You are muted until &b%date% &4for &6%reason% &4by
     &3%punisher%'

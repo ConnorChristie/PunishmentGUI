@@ -3,6 +3,7 @@ package me.chiller.punishmentgui.invgui;
 import me.chiller.punishmentgui.core.Main;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
+import me.chiller.punishmentgui.resources.Message;
 import me.chiller.punishmentgui.resources.Permission;
 import me.chiller.punishmentgui.util.Util;
 
@@ -92,21 +93,21 @@ public class GUIConstructor implements CommandExecutor
 								openPlayerPunishMenu(pl, player, builder.toString());
 							} else
 							{
-								Util.sendMessage("That player is not punishable!", player, RED);
+								Util.sendMessage(Message.NOT_PUNISHABLE.replace("%punished%", pl.getName()), player);
 							}
 						} else
 						{
-							Util.sendMessage("That player does not exist!", player, RED);
+							Util.sendMessage("That player does not exist!", player, DARK_RED);
 						}
 					}
 				} else
 				{
-					Util.sendMessage("You do not have permission to do that!", sender, RED);
+					Util.sendMessage("You do not have permission to do that!", sender, DARK_RED);
 				}
 			}
 		} else
 		{
-			Util.sendMessage("You can only do this as a player!", sender, RED);
+			Util.sendMessage("You can only do this as a player!", sender, DARK_RED);
 		}
 		
 		return true;

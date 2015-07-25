@@ -22,6 +22,7 @@ public enum Message
 	LOGIN_PERM_BAN("", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%#n%message_suffix%",    Type.MESSAGE),
 	LOGIN_TEMP_BAN("", "%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by &6%punisher%#n%message_suffix%", Type.MESSAGE),
 	
+	NOT_PUNISHABLE(  "", "%message_prefix% &4You are not allowed to punish &6%punished%",                                  Type.MESSAGE),
 	PERM_BAN_UNKNOWN("", "You have been banned for an unknown reason.#n%message_suffix%",                                  Type.MESSAGE),
 	TEMP_BAN_UNKNOWN("", "You have been banned for an unknown reason and an undeclared amount of time.#n%message_suffix%", Type.MESSAGE),
 	

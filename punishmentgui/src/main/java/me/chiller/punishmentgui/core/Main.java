@@ -27,13 +27,12 @@ public class Main extends JavaPlugin
 	
 	private File playersDir;
 	
-	private Map<UUID, PlayerFile> playerFiles;
+	private Map<UUID, PlayerFile> playerFiles = new HashMap<UUID, PlayerFile>();
 	
 	@Override
 	public void onEnable()
 	{
 		instance = this;
-		playerFiles = new HashMap<UUID, PlayerFile>();
 		
 		setUpConfig();
 		
