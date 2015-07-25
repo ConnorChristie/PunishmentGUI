@@ -43,7 +43,7 @@ public class PunishmentChecker implements Listener
 					event.setKickMessage(Message.LOGIN_PERM_BAN.replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()));
 				} else
 				{
-					event.setKickMessage("You have been banned for an unknown reason.\n" + Message.MESSAGE_SUFFIX);
+					event.setKickMessage(Message.PERM_BAN_UNKNOWN.toString());
 				}
 			} else
 			{
@@ -54,7 +54,7 @@ public class PunishmentChecker implements Listener
 					event.setKickMessage(Message.LOGIN_TEMP_BAN.replace("%date%", file.getExpiration(infraction.getType())).replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()));
 				} else
 				{
-					event.setKickMessage("You have been banned for an unknown reason and an undeclared amount of time.\n" + Message.MESSAGE_SUFFIX);
+					event.setKickMessage(Message.TEMP_BAN_UNKNOWN.toString());
 				}
 			}
 		}

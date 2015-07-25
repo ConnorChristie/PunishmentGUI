@@ -5,7 +5,9 @@ import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
 import me.chiller.punishmentgui.handler.PunishDealer;
+import me.chiller.punishmentgui.resources.Message;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -241,21 +243,23 @@ public class GUIClickListener implements Listener
 				Infraction currentInfraction = infractions.get(i);
 				ItemStack itemStack = currentInfraction.getType().getItem().clone();
 				
+				String[] loreHistory = Message.HISTORY
+						.replace("%reason%", currentInfraction.getReason())
+						.replace("%punisher%", currentInfraction.getGivenBy())
+						.replace("%date%", currentInfraction.getDateString())
+						.split("#n");
+				
 				if (!currentInfraction.getRemovedBy().isEmpty() && !currentInfraction.getRemoveReason().isEmpty())
 				{
-					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
-							GOLD + "Reason: " + RED + currentInfraction.getReason(),
-							GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
-							GOLD + "Date: " + RED + currentInfraction.getDateString(),
-							"",
-							GOLD + "Removed by: " + RED + currentInfraction.getRemovedBy(),
-							GOLD + "Removed reason: " + RED + currentInfraction.getRemoveReason());
+					String[] loreHistoryRemovedBy = Message.HISTORY_REMOVED_BY
+							.replace("%remover%", currentInfraction.getRemovedBy())
+							.replace("%remove_reason%", currentInfraction.getRemoveReason())
+							.split("#n");
+					
+					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()), (String[]) ArrayUtils.addAll(loreHistory, loreHistoryRemovedBy));
 				} else
 				{
-					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
-							GOLD + "Reason: " + RED + currentInfraction.getReason(),
-							GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
-							GOLD + "Date: " + RED + currentInfraction.getDateString());
+					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()), loreHistory);
 				}
 				
 				if (currentInfraction.isActive()) itemStack = GUIConstructor.addGlow(itemStack);

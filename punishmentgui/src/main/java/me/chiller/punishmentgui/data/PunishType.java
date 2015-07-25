@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public enum PunishType
 {
-	          //Message                //Plural form         //Material of the item                           //Temporary
+	//Enum    //Message                //Plural form         //Material of the item                           //Temporary
 	WARN(     GOLD + "Warn",           "Warned",             new ItemStack(Material.PAPER, 1),                false),
 	TEMP_MUTE(GOLD + "Temporary Mute", "Temporarily Muted",  new ItemStack(Material.INK_SACK, 1, (short) 12), true),
 	TEMP_BAN( GOLD + "Temporary Ban",  "Temporarily Banned", new ItemStack(Material.INK_SACK, 1, (short) 1),  true),
@@ -19,12 +19,13 @@ public enum PunishType
 	PERM_BAN( GOLD + "Permanent Ban",  "Permanently Banned", new ItemStack(Material.REDSTONE_BLOCK, 1),       false),
 	
 	//In here because they are all in one place, easy to access
-	HISTORICAL_ENTRY(AQUA + "Previous Reports", "", new ItemStack(Material.BOOK, 1), false),
-	PLAYR_HEAD(AQUA + "Punish ", "", null, false),
-	ACTIVE_TAG(GREEN + "Currently Active", "", null, false);
+	HISTORICAL_ENTRY(AQUA +  "Previous Reports", "", new ItemStack(Material.BOOK, 1), false),
+	PLAYR_HEAD(      AQUA +  "Punish ",          "", null,                            false),
+	ACTIVE_TAG(      GREEN + "Currently Active", "", null,                            false);
 	
 	private String displayName;
 	private String plural;
+	
 	private ItemStack item;
 	private boolean isTemp;
 	
