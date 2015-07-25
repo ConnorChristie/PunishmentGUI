@@ -41,17 +41,17 @@ public class Resources
 		MESSAGE_SUFFIX("%message_suffix%", "&aUnfairly punished? Contact us on the forums!"),
 		
 		WARN(     "", "%message_prefix% &4You have been warned &6(%reason%) &4by &6%punisher%"),
-		PERM_BAN( "", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%"),
+		PERM_BAN( "", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%#n%message_suffix%"),
 		PERM_MUTE("", "%message_prefix% &4You have been permanantly muted &6(%reason%) &4by &6%punisher%"),
-		TEMP_BAN( "", "%message_prefix% &4You have been temporarily banned &6(%reason%) &4by &6%punisher%"),
+		TEMP_BAN( "", "%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by &6%punisher%#n%message_suffix%"),
 		TEMP_MUTE("", "%message_prefix% &4You have been temporarily muted &6(%reason%) &4by &6%punisher%"),
 		
 		UNMUTE(    "", "%message_prefix% &aYou are no longer muted."),
-		PERM_MUTED("", "%message_prefix% &4You are permanently muted."),
-		TEMP_MUTED("", "%message_prefix% &4You are muted until &b%date%"),
+		PERM_MUTED("", "%message_prefix% &4You are permanently muted for &6%reason% &4by &3%punisher%"),
+		TEMP_MUTED("", "%message_prefix% &4You are muted until &b%date% &4for &6%reason% &4by &3%punisher%"),
 		
-		LOGIN_PERM_BAN("", "You have been permanently banned &6(%reason%)#n%message_suffix%"),
-		LOGIN_TEMP_BAN("", "You have been banned until &b%date% &6(%reason%)#n%message_suffix%");
+		LOGIN_PERM_BAN("", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%#n%message_suffix%"),
+		LOGIN_TEMP_BAN("", "%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by &6%punisher%#n%message_suffix%");
 		
 		static
 		{
@@ -104,8 +104,8 @@ public class Resources
 	
 	public static enum Times
 	{
-		BAN("ban_increment",   60),
-		MUTE("mute_increment", 30);
+		BAN("ban_increment",   240),
+		MUTE("mute_increment", 120);
 		
 		static
 		{
@@ -143,5 +143,10 @@ public class Resources
 	public static void sendMessage(String msg, CommandSender recipient)
 	{
 		if (recipient != null) recipient.sendMessage(msg);
+	}
+	
+	public static void sendSuffix(CommandSender recipient)
+	{
+		if (recipient != null) recipient.sendMessage(Messages.MESSAGE_PREFIX.toString() + " " + Messages.MESSAGE_SUFFIX.toString());
 	}
 }

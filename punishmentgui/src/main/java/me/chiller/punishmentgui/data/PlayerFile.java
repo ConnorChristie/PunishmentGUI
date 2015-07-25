@@ -207,10 +207,10 @@ public class PlayerFile
 	 */
 	public void setPunishmentActivity(PunishType type, boolean active)
 	{
-		setPunishmentActivity(type, active, null);
+		setPunishmentActivity(type, active, null, null);
 	}
 	
-	public void setPunishmentActivity(PunishType type, boolean active, Player remover)
+	public void setPunishmentActivity(PunishType type, boolean active, Player remover, String reason)
 	{
 		if (type.isTemp())
 		{
@@ -249,7 +249,7 @@ public class PlayerFile
 		{
 			infractions &= ~type.getOrdinal();
 			
-			unActivateInfraction(type, remover);
+			unActivateInfraction(type, remover, reason);
 		}
 		
 		save();
@@ -294,26 +294,32 @@ public class PlayerFile
 		infractionHistory.put(infraction.getDate(), infraction);
 		
 		setPunishmentActivity(infraction.getType(), true);
+		save();
 	}
 	
-	public void unActivateInfraction(PunishType type, Player remover)
+	public void unActivateInfraction(PunishType type, Player remover, String reason)
 	{
 		for (Infraction inf : infractionHistory.values())
 		{
 			if (inf.getType() == type && inf.isActive())
 			{
 				inf.setActive(false);
-				if (remover != null) inf.setRemovedBy(remover.getName());
+				
+				if (remover != null)
+				{
+					inf.setRemovedBy(remover.getName());
+					inf.setRemoveReason(reason);
+				}
 			}
 		}
-		
-		config.set("history", infractionHistory);
 		
 		save();
 	}
 	
 	public void save()
 	{
+		config.set("history", infractionHistory);
+		
 		config.set("current_infractions", infractions);
 		config.set("expiration.ban", banExpiration);
 		config.set("expiration.mute", muteExpiration);

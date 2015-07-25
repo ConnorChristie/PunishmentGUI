@@ -17,6 +17,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 	private Long date;
 	private String givenBy;
 	private String removedBy;
+	private String removeReason;
 	private boolean active;
 	
 	public Infraction(PunishType type, String reason, long date, String givenBy)
@@ -26,6 +27,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		this.date = date;
 		this.givenBy = givenBy;
 		this.removedBy = "";
+		this.removeReason = "";
 		this.active = type != PunishType.WARN;
 	}
 	
@@ -35,6 +37,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		reason = (String) map.get("reason");
 		givenBy = (String) map.get("given_by");
 		removedBy = (String) map.get("removed_by");
+		removeReason = (String) map.get("remove_reason");
 		active = (Boolean) map.get("active");
 	}
 	
@@ -73,6 +76,16 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		this.removedBy = player;
 	}
 	
+	public String getRemoveReason()
+	{
+		return removeReason;
+	}
+	
+	public void setRemoveReason(String removeReason)
+	{
+		this.removeReason = removeReason;
+	}
+	
 	public void setDate(Long date)
 	{
 		this.date = date;
@@ -96,6 +109,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		map.put("reason", reason);
 		map.put("given_by", givenBy);
 		map.put("removed_by", removedBy);
+		map.put("remove_reason", removeReason);
 		map.put("active", active);
 		
 		return map;
@@ -105,5 +119,4 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 	{
 		return getDate().compareTo(other.getDate());
 	}
-	
 }

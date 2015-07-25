@@ -34,9 +34,12 @@ import static org.bukkit.ChatColor.*;
 public class GUIClickListener implements Listener
 {
 	private Main main;
-	private PlayerFile file;
 	
 	private Inventory mainMenu;
+	
+	private OfflinePlayer player;
+	private PlayerFile file;
+	private String reason;
 	
 	public GUIClickListener(Main main)
 	{
@@ -67,11 +70,11 @@ public class GUIClickListener implements Listener
 			
 			ItemMeta meta = e.getCurrentItem().getItemMeta();
 			
-			String reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0)).replace("Reason: ", "");
+			reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0)).replace("Reason: ", "");
 			UUID punishedUUID = UUID.fromString(ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(1)).replace("UUID: ", ""));
 			
-			OfflinePlayer player = Bukkit.getOfflinePlayer(punishedUUID);
-			PlayerFile file = Main.getInstance().getPlayerFile(punishedUUID);
+			player = Bukkit.getOfflinePlayer(punishedUUID);
+			file = Main.getInstance().getPlayerFile(punishedUUID);
 			
 			String displayName = meta.getDisplayName();
 			PunishType type = PunishType.value(displayName);
@@ -87,12 +90,12 @@ public class GUIClickListener implements Listener
 				case TEMP_BAN:
 					if (file.hasInfraction(type))
 					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_BAN, (Player) e.getWhoClicked());
+						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_BAN, (Player) e.getWhoClicked(), reason);
 					} else
 					{
 						if (file.hasInfraction(PunishType.PERM_BAN))
 						{
-							file.setPunishmentActivity(PunishType.PERM_BAN, false);
+							file.setPunishmentActivity(PunishType.PERM_BAN, false, (Player) e.getWhoClicked(), "Changed to Temporary Ban");
 						}
 						
 						PunishDealer.tempBan(player, e.getWhoClicked().getName(), reason);
@@ -102,12 +105,12 @@ public class GUIClickListener implements Listener
 				case TEMP_MUTE:
 					if (file.hasInfraction(type))
 					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_MUTE, (Player) e.getWhoClicked());
+						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_MUTE, (Player) e.getWhoClicked(), reason);
 					} else
 					{
 						if (file.hasInfraction(PunishType.PERM_MUTE))
 						{
-							file.setPunishmentActivity(PunishType.PERM_MUTE, false);
+							file.setPunishmentActivity(PunishType.PERM_MUTE, false, (Player) e.getWhoClicked(), "Changed to Temporary Mute");
 						}
 						
 						PunishDealer.tempMute(player, e.getWhoClicked().getName(), reason);
@@ -117,12 +120,12 @@ public class GUIClickListener implements Listener
 				case PERM_BAN:
 					if (file.hasInfraction(type))
 					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_BAN, (Player) e.getWhoClicked());
+						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_BAN, (Player) e.getWhoClicked(), reason);
 					} else
 					{
 						if (file.hasInfraction(PunishType.TEMP_BAN))
 						{
-							file.setPunishmentActivity(PunishType.TEMP_BAN, false);
+							file.setPunishmentActivity(PunishType.TEMP_BAN, false, (Player) e.getWhoClicked(), "Changed to Permanent Ban");
 						}
 						
 						PunishDealer.permBan(player, e.getWhoClicked().getName(), reason);
@@ -132,12 +135,12 @@ public class GUIClickListener implements Listener
 				case PERM_MUTE:
 					if (file.hasInfraction(type))
 					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_MUTE, (Player) e.getWhoClicked());
+						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_MUTE, (Player) e.getWhoClicked(), reason);
 					} else
 					{
 						if (file.hasInfraction(PunishType.TEMP_MUTE))
 						{
-							file.setPunishmentActivity(PunishType.TEMP_MUTE, false);
+							file.setPunishmentActivity(PunishType.TEMP_MUTE, false, (Player) e.getWhoClicked(), "Changed to Permanent Mute");
 						}
 						
 						PunishDealer.permMute(player, e.getWhoClicked().getName(), reason);
@@ -177,10 +180,11 @@ public class GUIClickListener implements Listener
 				
 				if (infraction.isActive())
 				{
-					PunishDealer.revertPunishment(file.getUUID(), infraction.getType(), (Player) e.getWhoClicked());
+					PunishDealer.revertPunishment(file.getUUID(), infraction.getType(), (Player) e.getWhoClicked(), reason);
 				}
 				
 				refreshHistoryMenu(inv);
+				refreshMainMenu(mainMenu, (Player) e.getWhoClicked(), player, file, reason);
 			}
 		}
 	}
@@ -237,18 +241,20 @@ public class GUIClickListener implements Listener
 				Infraction currentInfraction = infractions.get(i);
 				ItemStack itemStack = currentInfraction.getType().getItem().clone();
 				
-				if (currentInfraction.getRemovedBy().isEmpty())
+				if (!currentInfraction.getRemovedBy().isEmpty() && !currentInfraction.getRemoveReason().isEmpty())
 				{
 					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
 							GOLD + "Reason: " + RED + currentInfraction.getReason(),
 							GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
-							GOLD + "Date: " + RED + currentInfraction.getDateString());
+							GOLD + "Date: " + RED + currentInfraction.getDateString(),
+							"",
+							GOLD + "Removed by: " + RED + currentInfraction.getRemovedBy(),
+							GOLD + "Removed reason: " + RED + currentInfraction.getRemoveReason());
 				} else
 				{
 					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()),
 							GOLD + "Reason: " + RED + currentInfraction.getReason(),
 							GOLD + "Given by: " + RED + currentInfraction.getGivenBy(),
-							GOLD + "Removed by: " + RED + currentInfraction.getRemovedBy(),
 							GOLD + "Date: " + RED + currentInfraction.getDateString());
 				}
 				

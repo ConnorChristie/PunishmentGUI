@@ -19,8 +19,8 @@ public enum PunishType
 	PERM_BAN( GOLD + "Permanent Ban",  "Permanently Banned", new ItemStack(Material.REDSTONE_BLOCK, 1),       false),
 	
 	//In here because they are all in one place, easy to access
-	HISTORICAL_ENTRY(GOLD + "Previous Reports", "", new ItemStack(Material.BOOK, 1), false),
-	PLAYR_HEAD(GOLD + "Punish: ", "", null, false),
+	HISTORICAL_ENTRY(AQUA + "Previous Reports", "", new ItemStack(Material.BOOK, 1), false),
+	PLAYR_HEAD(AQUA + "Punish ", "", null, false),
 	ACTIVE_TAG(GREEN + "Currently Active", "", null, false);
 	
 	private String displayName;

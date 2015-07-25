@@ -75,7 +75,7 @@ public class PunishmentChecker implements Listener
 				if (infraction != null)
 				{
 					Resources.sendMessage(Messages.TEMP_MUTED.replace("%date%", file.getExpiration(PunishType.TEMP_MUTE)).replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()), e.getPlayer());
-					Resources.sendMessage(Messages.MESSAGE_PREFIX.toString() + " " + Messages.MESSAGE_SUFFIX.toString(), e.getPlayer());
+					Resources.sendSuffix(e.getPlayer());
 				}
 			} else if (file.isPunishmentActive(PunishType.PERM_MUTE))
 			{
@@ -84,7 +84,7 @@ public class PunishmentChecker implements Listener
 				if (infraction != null)
 				{
 					Resources.sendMessage(Messages.PERM_MUTED.toString().replace("%reason%", infraction.getReason()).replace("%punisher%", infraction.getGivenBy()), e.getPlayer());
-					Resources.sendMessage(Messages.MESSAGE_PREFIX.toString() + " " + Messages.MESSAGE_SUFFIX.toString(), e.getPlayer());
+					Resources.sendSuffix(e.getPlayer());
 				}
 			}
 		}

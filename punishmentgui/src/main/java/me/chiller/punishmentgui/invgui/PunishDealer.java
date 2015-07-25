@@ -42,6 +42,7 @@ public class PunishDealer
 		if (player.isOnline())
 		{
 			Resources.sendMessage(Resources.Messages.TEMP_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Resources.sendSuffix((Player) player);
 		}
 	}
 	
@@ -53,6 +54,7 @@ public class PunishDealer
 		if (player.isOnline())
 		{
 			Resources.sendMessage(Resources.Messages.PERM_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Resources.sendSuffix((Player) player);
 		}
 		
 		file.save();
@@ -84,10 +86,10 @@ public class PunishDealer
 		}
 	}
 	
-	public static void revertPunishment(UUID punishedUUID, PunishType type, Player remover)
+	public static void revertPunishment(UUID punishedUUID, PunishType type, Player remover, String reason)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(punishedUUID);
-		file.setPunishmentActivity(type, false, remover);
+		file.setPunishmentActivity(type, false, remover, reason);
 		
 		OfflinePlayer player = Bukkit.getOfflinePlayer(punishedUUID);
 		

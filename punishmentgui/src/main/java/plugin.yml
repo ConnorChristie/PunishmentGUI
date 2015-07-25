@@ -1,12 +1,12 @@
 name: PunishmentGUI
-version: 1.0.0
+version: 1.0.2
 description: Gives a GUI window to punish players
 author: Chiller
 main: me.chiller.punishmentgui.core.Main
 commands:
   punish:
     description: 'Punishes the given player'
-    usage: '§c§lPUNISH §6Do /punish <PlayerName> <Reason>'
+    usage: '§c§lPUNISH §r§6Do /punish <PlayerName> <Reason>'
     aliases: p
     permission: 'punishment.use'
     permission-message: ''
