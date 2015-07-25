@@ -1,5 +1,5 @@
 name: PunishmentGUI
-version: 1.0.4
+version: 1.0.5
 description: Gives a GUI window to punish players
 author: Chiller
 main: me.chiller.punishmentgui.core.Main
