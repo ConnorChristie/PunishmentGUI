@@ -1,5 +1,5 @@
 # PunishmentGUI
-Bukkit plugin originally created by: *Ethan160503*, modified by *TheChillerCraft*!
+Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCraft**!
 
 ### Permissions
 - **punish.use** - Gives the ability to use the punishment GUI
