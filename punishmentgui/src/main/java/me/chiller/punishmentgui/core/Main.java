@@ -23,7 +23,6 @@ public class Main extends JavaPlugin
 	private static Main instance;
 	
 	private File playersDir;
-	private GUIConstructor constructor;
 	
 	private Map<UUID, PlayerFile> playerFiles;
 	
@@ -64,7 +63,7 @@ public class Main extends JavaPlugin
 	
 	private void registerCommands()
 	{
-		constructor = new GUIConstructor(this);
+		new GUIConstructor(this);
 	}
 	
 	private void registerListeners()

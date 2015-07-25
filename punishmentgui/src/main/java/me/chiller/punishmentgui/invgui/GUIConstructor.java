@@ -17,7 +17,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -38,7 +37,6 @@ public class GUIConstructor implements CommandExecutor
 	private static ItemStack tempBanSeed;
 	private static ItemStack permMuteSeed;
 	private static ItemStack permBanSeed;
-	private static ItemStack historicalEntryButtonSeed;
 	private static ItemStack historicalEntrySeed;
 	
 	public GUIConstructor(Main main)
@@ -61,10 +59,11 @@ public class GUIConstructor implements CommandExecutor
 		permBanSeed = PunishType.PERM_BAN.getItem();
 		editMetadata(permBanSeed, PunishType.PERM_BAN, RED + "Permanently ban the player");
 		
-		historicalEntryButtonSeed = PunishType.HISTORICAL_ENTRY.getItem();
-		editMetadata(historicalEntryButtonSeed, PunishType.HISTORICAL_ENTRY, RED + "View previous punishments against this player");
+		historicalEntrySeed = PunishType.HISTORICAL_ENTRY.getItem();
+		editMetadata(historicalEntrySeed, PunishType.HISTORICAL_ENTRY, RED + "View previous punishments against this player");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 		if (sender instanceof Player)
@@ -241,7 +240,7 @@ public class GUIConstructor implements CommandExecutor
 	
 	private static void addHistoryButton(Inventory inv)
 	{
-		inv.setItem(0, historicalEntryButtonSeed);
+		inv.setItem(0, historicalEntrySeed);
 	}
 	
 	private static void addPlayerHead(Inventory inv, OfflinePlayer player, String punishReason)
