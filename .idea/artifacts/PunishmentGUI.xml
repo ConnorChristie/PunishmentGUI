@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="PunishmentGUI">
-    <output-path>$USER_HOME$/Desktop</output-path>
-    <root id="archive" name="PunishmentGUI.jar">
-      <element id="module-output" name="PunismentGUI" />
-    </root>
-  </artifact>
-</component>
