@@ -5,17 +5,20 @@ messages:
   warn: '%message_prefix% &4You have been warned &6(%reason%) &4by &6%punisher%'
   unmute: '%message_prefix% &aYou are no longer muted.'
   perm_ban: '%message_prefix% &4You have been permanantly banned &6(%reason%) &4by
-    &6%punisher%'
+    &6%punisher%#n%message_suffix%'
   perm_mute: '%message_prefix% &4You have been permanantly muted &6(%reason%) &4by
     &6%punisher%'
-  temp_ban: '%message_prefix% &4You have been temporarily banned &6(%reason%) &4by
-    &6%punisher%'
+  temp_ban: '%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by
+    &6%punisher%#n%message_suffix%'
   temp_mute: '%message_prefix% &4You have been temporarily muted &6(%reason%) &4by
     &6%punisher%'
-  login_perm_ban: You have been permanently banned &6(%reason%)#n%message_suffix%
-  login_temp_ban: You have been banned until &b%date% &6(%reason%)#n%message_suffix%
-  perm_muted: '%message_prefix% &4You are permanently muted.'
-  temp_muted: '%message_prefix% &4You are muted until &b%date%'
+  login_perm_ban: '%message_prefix% &4You have been permanantly banned &6(%reason%)
+    &4by &6%punisher%#n%message_suffix%'
+  login_temp_ban: '%message_prefix% &4You have been banned until &b%date% &6(%reason%)
+    &4by &6%punisher%#n%message_suffix%'
+  perm_muted: '%message_prefix% &4You are permanently muted for &6%reason% &4by &3%punisher%'
+  temp_muted: '%message_prefix% &4You are muted until &b%date% &4for &6%reason% &4by
+    &3%punisher%'
 time:
-  ban_increment: 60
-  mute_increment: 30
+  ban_increment: 240
+  mute_increment: 120

@@ -7,6 +7,9 @@ import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -81,11 +84,12 @@ public class PunishDealer
 		}
 	}
 	
-	public static void revertPunishment(OfflinePlayer player, PunishType type, Player remover)
+	public static void revertPunishment(UUID punishedUUID, PunishType type, Player remover)
 	{
-		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
-		
+		PlayerFile file = Main.getInstance().getPlayerFile(punishedUUID);
 		file.setPunishmentActivity(type, false, remover);
+		
+		OfflinePlayer player = Bukkit.getOfflinePlayer(punishedUUID);
 		
 		if (player.isOnline())
 		{

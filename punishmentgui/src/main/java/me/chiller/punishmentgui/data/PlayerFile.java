@@ -86,7 +86,12 @@ public class PlayerFile
 				{
 					setPunishmentActivity(PunishType.TEMP_MUTE, false);
 					
-					Resources.sendMessage(Messages.UNMUTE.toString(), Bukkit.getPlayer(id));
+					OfflinePlayer player = Bukkit.getOfflinePlayer(id);
+					
+					if (player.isOnline())
+					{
+						Resources.sendMessage(Messages.UNMUTE.toString(), (Player) player);
+					}
 				}
 			};
 			
@@ -105,6 +110,19 @@ public class PlayerFile
 		}
 		
 		return false;
+	}
+	
+	public Infraction getLatestInfraction(PunishType type)
+	{
+		for (Infraction infract : getInfractionHistory())
+		{
+			if (infract.getType() == type)
+			{
+				return infract;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -169,7 +187,9 @@ public class PlayerFile
 	public List<Infraction> getInfractionHistory()
 	{
 		List<Infraction> infracts = new ArrayList<Infraction>(infractionHistory.values());
+		
 		Collections.sort(infracts);
+		Collections.reverse(infracts);
 		
 		return infracts;
 	}
@@ -307,8 +327,13 @@ public class PlayerFile
 		}
 	}
 
-	public Player getPlayer()
+	public OfflinePlayer getPlayer()
 	{
-		return Bukkit.getPlayer(id);
+		return Bukkit.getOfflinePlayer(id);
+	}
+	
+	public UUID getUUID()
+	{
+		return id;
 	}
 }

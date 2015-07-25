@@ -69,33 +69,40 @@ public class GUIConstructor implements CommandExecutor
 	{
 		if (sender instanceof Player)
 		{
-			if (args.length > 1)
+			Player player = (Player) sender;
+			
+			if (label.equalsIgnoreCase("punish") || label.equalsIgnoreCase("p"))
 			{
-				OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
-				
-				if (player.hasPlayedBefore() || player.isOnline())
+				if (player.hasPermission(Permission.PUNISH_USE.toString()))
 				{
-					StringBuilder builder = new StringBuilder();
-					
-					// Combine reason
-					for (int i = 1; i < args.length; i++)
-						builder.append((i == 1 ? "" : " ") + args[i]);
+					if (args.length > 1)
+					{
+						OfflinePlayer pl = Bukkit.getOfflinePlayer(args[0]);
 						
-					// Send menu
-					openPlayerPunishMenu(player, (Player) sender, builder.toString());
+						if (pl.hasPlayedBefore() || pl.isOnline())
+						{
+							StringBuilder builder = new StringBuilder();
+							
+							// Combine reason
+							for (int i = 1; i < args.length; i++)
+								builder.append((i == 1 ? "" : " ") + args[i]);
+								
+							// Send menu
+							openPlayerPunishMenu(pl, player, builder.toString());
+						} else
+						{
+							Resources.sendMessage("Error: that player does not exist", player, RED);
+						}
+					}
 				} else
 				{
-					Resources.sendMessage("Error: that player does not exist", sender, RED);
+					Resources.sendMessage("You do not have permission to do that!", sender, RED);
 				}
-				
-				return true;
-			} else
-			{
-				return false;
 			}
+		} else
+		{
+			Resources.sendMessage("You can only do this as a player!", sender, RED);
 		}
-		
-		Resources.sendMessage("You can only do this as a player!", sender, RED);
 		
 		return true;
 	}

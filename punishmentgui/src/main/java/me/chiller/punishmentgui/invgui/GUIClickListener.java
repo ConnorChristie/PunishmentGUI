@@ -70,7 +70,7 @@ public class GUIClickListener implements Listener
 			String reason = ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(0)).replace("Reason: ", "");
 			UUID punishedUUID = UUID.fromString(ChatColor.stripColor(inv.getItem(8).getItemMeta().getLore().get(1)).replace("UUID: ", ""));
 			
-			Player player = Bukkit.getPlayer(punishedUUID);
+			OfflinePlayer player = Bukkit.getOfflinePlayer(punishedUUID);
 			PlayerFile file = Main.getInstance().getPlayerFile(punishedUUID);
 			
 			String displayName = meta.getDisplayName();
@@ -86,8 +86,9 @@ public class GUIClickListener implements Listener
 					break;
 				case TEMP_BAN:
 					if (file.hasInfraction(type))
-						PunishDealer.revertPunishment(player, PunishType.TEMP_BAN, (Player) e.getWhoClicked());
-					else
+					{
+						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_BAN, (Player) e.getWhoClicked());
+					} else
 					{
 						if (file.hasInfraction(PunishType.PERM_BAN))
 						{
@@ -100,8 +101,9 @@ public class GUIClickListener implements Listener
 					break;
 				case TEMP_MUTE:
 					if (file.hasInfraction(type))
-						PunishDealer.revertPunishment(player, PunishType.TEMP_MUTE, (Player) e.getWhoClicked());
-					else
+					{
+						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_MUTE, (Player) e.getWhoClicked());
+					} else
 					{
 						if (file.hasInfraction(PunishType.PERM_MUTE))
 						{
@@ -114,8 +116,9 @@ public class GUIClickListener implements Listener
 					break;
 				case PERM_BAN:
 					if (file.hasInfraction(type))
-						PunishDealer.revertPunishment(player, PunishType.PERM_BAN, (Player) e.getWhoClicked());
-					else
+					{
+						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_BAN, (Player) e.getWhoClicked());
+					} else
 					{
 						if (file.hasInfraction(PunishType.TEMP_BAN))
 						{
@@ -128,8 +131,9 @@ public class GUIClickListener implements Listener
 					break;
 				case PERM_MUTE:
 					if (file.hasInfraction(type))
-						PunishDealer.revertPunishment(player, PunishType.PERM_MUTE, (Player) e.getWhoClicked());
-					else
+					{
+						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_MUTE, (Player) e.getWhoClicked());
+					} else
 					{
 						if (file.hasInfraction(PunishType.TEMP_MUTE))
 						{
@@ -169,11 +173,11 @@ public class GUIClickListener implements Listener
 			} else
 			{
 				List<Infraction> infractions = file.getInfractionHistory();
-				Infraction infraction = infractions.get(infractions.size() - 1 - e.getSlot());
+				Infraction infraction = infractions.get(e.getSlot());
 				
 				if (infraction.isActive())
 				{
-					PunishDealer.revertPunishment(file.getPlayer(), infraction.getType(), (Player) e.getWhoClicked());
+					PunishDealer.revertPunishment(file.getUUID(), infraction.getType(), (Player) e.getWhoClicked());
 				}
 				
 				refreshHistoryMenu(inv);
@@ -269,8 +273,6 @@ public class GUIClickListener implements Listener
 		GUIConstructor.editMetadata(back, ChatColor.GREEN + "Back to Main Menu");
 		
 		inv.setItem(inv.getSize() - 1, back);
-		
-		Collections.reverse(infractionList);
 		
 		return infractionList.toArray(new ItemStack[infractionList.size()]);
 	}
