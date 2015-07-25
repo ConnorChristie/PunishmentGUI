@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import me.chiller.punishmentgui.core.Resources;
+import me.chiller.punishmentgui.util.Resources;
 
 /**
  * Created by Ethan Zeigler, edited by Chiller on 7/7/2015 for PunismentGUI.

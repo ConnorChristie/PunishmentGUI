@@ -4,6 +4,7 @@ import me.chiller.punishmentgui.core.Main;
 import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
+import me.chiller.punishmentgui.handler.PunishDealer;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;

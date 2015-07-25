@@ -2,9 +2,9 @@ package me.chiller.punishmentgui.core;
 
 import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
+import me.chiller.punishmentgui.handler.PunishmentChecker;
 import me.chiller.punishmentgui.invgui.GUIClickListener;
 import me.chiller.punishmentgui.invgui.GUIConstructor;
-import me.chiller.punishmentgui.misc.PunishmentChecker;
 
 import java.io.File;
 import java.io.IOException;

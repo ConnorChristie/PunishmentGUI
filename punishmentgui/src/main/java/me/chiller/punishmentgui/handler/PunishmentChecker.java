@@ -1,11 +1,12 @@
-package me.chiller.punishmentgui.misc;
+package me.chiller.punishmentgui.handler;
 
 import me.chiller.punishmentgui.core.Main;
-import me.chiller.punishmentgui.core.Resources;
-import me.chiller.punishmentgui.core.Resources.Messages;
 import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
+import me.chiller.punishmentgui.util.Resources;
+import me.chiller.punishmentgui.util.Resources.Messages;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

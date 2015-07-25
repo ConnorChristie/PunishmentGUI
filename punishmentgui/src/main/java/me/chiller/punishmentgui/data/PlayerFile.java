@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.chiller.punishmentgui.core.Main;
-import me.chiller.punishmentgui.core.Resources;
-import me.chiller.punishmentgui.core.Resources.Messages;
-import me.chiller.punishmentgui.core.Resources.Times;
+import me.chiller.punishmentgui.util.Resources;
+import me.chiller.punishmentgui.util.Resources.Messages;
+import me.chiller.punishmentgui.util.Resources.Times;
 
 import java.io.File;
 import java.io.IOException;

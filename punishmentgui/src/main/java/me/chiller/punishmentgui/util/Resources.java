@@ -1,7 +1,9 @@
-package me.chiller.punishmentgui.core;
+package me.chiller.punishmentgui.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import me.chiller.punishmentgui.core.Main;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

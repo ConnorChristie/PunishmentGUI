@@ -1,10 +1,10 @@
 package me.chiller.punishmentgui.invgui;
 
 import me.chiller.punishmentgui.core.Main;
-import me.chiller.punishmentgui.core.Resources;
-import me.chiller.punishmentgui.core.Resources.Permission;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
+import me.chiller.punishmentgui.util.Resources;
+import me.chiller.punishmentgui.util.Resources.Permission;
 
 import org.bukkit.Bukkit;
 
