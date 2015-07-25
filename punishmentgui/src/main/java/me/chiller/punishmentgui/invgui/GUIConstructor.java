@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
- * Created by Ethan Zeigler on 7/6/2015 for PunismentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/6/2015 for PunismentGUI.
  */
 public class GUIConstructor implements CommandExecutor
 {

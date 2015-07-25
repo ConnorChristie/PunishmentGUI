@@ -8,37 +8,43 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import me.chiller.punishmentgui.core.Resources;
 
 /**
- * Created by Ethan Zeigler on 7/7/2015 for PunismentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/7/2015 for PunismentGUI.
  */
 public class Infraction implements ConfigurationSerializable, Comparable<Infraction>
 {
 	private PunishType type;
 	private String reason;
+	
 	private Long date;
+	private boolean active;
+	
 	private String givenBy;
 	private String removedBy;
 	private String removeReason;
-	private boolean active;
 	
 	public Infraction(PunishType type, String reason, long date, String givenBy)
 	{
 		this.type = type;
 		this.reason = reason;
+		
 		this.date = date;
+		this.active = type != PunishType.WARN;
+		
 		this.givenBy = givenBy;
 		this.removedBy = "";
 		this.removeReason = "";
-		this.active = type != PunishType.WARN;
 	}
 	
 	public Infraction(Map<String, Object> map)
 	{
 		type = PunishType.valueOf((String) map.get("type"));
 		reason = (String) map.get("reason");
+		
+		active = (Boolean) map.get("active");
+		
 		givenBy = (String) map.get("given_by");
 		removedBy = (String) map.get("removed_by");
 		removeReason = (String) map.get("remove_reason");
-		active = (Boolean) map.get("active");
 	}
 	
 	public Long getDate()
@@ -107,10 +113,12 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		
 		map.put("type", type.name());
 		map.put("reason", reason);
+		
+		map.put("active", active);
+		
 		map.put("given_by", givenBy);
 		map.put("removed_by", removedBy);
 		map.put("remove_reason", removeReason);
-		map.put("active", active);
 		
 		return map;
 	}

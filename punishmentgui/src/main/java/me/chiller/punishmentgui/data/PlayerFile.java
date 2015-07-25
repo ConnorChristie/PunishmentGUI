@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by Ethan Zeigler on 7/7/2015 for PunishmentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/7/2015 for PunishmentGUI.
  */
 public class PlayerFile
 {

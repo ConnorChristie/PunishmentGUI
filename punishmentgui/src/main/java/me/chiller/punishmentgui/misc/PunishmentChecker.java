@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Created by Ethan Zeigler on 7/16/2015 for PunismentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/16/2015 for PunismentGUI.
  */
 public class PunishmentChecker implements Listener
 {

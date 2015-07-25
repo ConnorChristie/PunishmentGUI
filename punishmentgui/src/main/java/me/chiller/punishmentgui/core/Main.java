@@ -16,7 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Created by Ethan Zeigler on 6/27/2015 for ${PROJECT_NAME}.
+ * Created by Ethan Zeigler, edited by Chiller on 6/27/2015 for ${PROJECT_NAME}.
  */
 public class Main extends JavaPlugin
 {

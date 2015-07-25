@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Created by Ethan Zeigler on 7/7/2015 for PunismentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/7/2015 for PunismentGUI.
  */
 public enum PunishType
 {

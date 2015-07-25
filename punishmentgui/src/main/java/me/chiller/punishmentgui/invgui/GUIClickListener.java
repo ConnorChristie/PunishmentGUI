@@ -28,7 +28,7 @@ import java.util.UUID;
 import static org.bukkit.ChatColor.*;
 
 /**
- * Created by Ethan Zeigler on 7/6/2015 for PunismentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/6/2015 for PunismentGUI.
  */
 public class GUIClickListener implements Listener
 {

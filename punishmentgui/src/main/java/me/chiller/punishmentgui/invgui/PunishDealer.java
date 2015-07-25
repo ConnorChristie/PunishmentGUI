@@ -14,9 +14,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
- * Created by Ethan Zeigler on 7/13/2015 for PunismentGUI.
+ * Created by Ethan Zeigler, edited by Chiller on 7/13/2015 for PunismentGUI.
  */
-// TODO edit player metadata if online
 public class PunishDealer
 {
 	public static void warn(OfflinePlayer player, String punisherName, String reason)
