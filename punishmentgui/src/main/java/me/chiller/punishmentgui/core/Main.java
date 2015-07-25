@@ -37,7 +37,7 @@ public class Main extends JavaPlugin
 		
 		setUpConfig();
 		
-		runUpdater();
+		//runUpdater();
 		runPluginMetrics();
 		
 		loadPlayerFiles();
@@ -49,7 +49,7 @@ public class Main extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-	
+		
 	}
 	
 	private void runUpdater()

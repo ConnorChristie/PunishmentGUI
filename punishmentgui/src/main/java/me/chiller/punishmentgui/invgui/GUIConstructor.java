@@ -80,14 +80,20 @@ public class GUIConstructor implements CommandExecutor
 						
 						if (pl.hasPlayedBefore() || pl.isOnline())
 						{
-							StringBuilder builder = new StringBuilder();
-							
-							// Combine reason
-							for (int i = 1; i < args.length; i++)
-								builder.append((i == 1 ? "" : " ") + args[i]);
+							if (pl.isOnline() && !pl.getPlayer().hasPermission(Permission.PUNISH_PROTECTED.toString()))
+							{
+								StringBuilder builder = new StringBuilder();
 								
-							// Send menu
-							openPlayerPunishMenu(pl, player, builder.toString());
+								// Combine reason
+								for (int i = 1; i < args.length; i++)
+									builder.append((i == 1 ? "" : " ") + args[i]);
+								
+								// Send menu
+								openPlayerPunishMenu(pl, player, builder.toString());
+							} else
+							{
+								Util.sendMessage("That player is not punishable!", player, RED);
+							}
 						} else
 						{
 							Util.sendMessage("That player does not exist!", player, RED);

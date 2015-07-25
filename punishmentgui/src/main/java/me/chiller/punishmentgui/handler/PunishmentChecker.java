@@ -5,6 +5,7 @@ import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
 import me.chiller.punishmentgui.resources.Message;
+import me.chiller.punishmentgui.resources.Permission;
 import me.chiller.punishmentgui.util.Util;
 
 import org.bukkit.entity.Player;
@@ -29,6 +30,13 @@ public class PunishmentChecker implements Listener
 	{
 		Player player = event.getPlayer();
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
+		
+		if (file.hasAnyInfraction() && player.hasPermission(Permission.PUNISH_PROTECTED.toString()))
+		{
+			file.clearCurrentInfractions();
+			
+			return;
+		}
 		
 		if (file.hasInfraction(PunishType.TEMP_BAN, PunishType.PERM_BAN))
 		{
@@ -63,6 +71,8 @@ public class PunishmentChecker implements Listener
 	@EventHandler(ignoreCancelled = true)
 	public void onChat(AsyncPlayerChatEvent e)
 	{
+		// Check if !e.isCancelled()
+		
 		PlayerFile file = Main.getInstance().getPlayerFile(e.getPlayer().getUniqueId());
 		
 		if (file.hasInfraction(PunishType.PERM_MUTE, PunishType.TEMP_MUTE))

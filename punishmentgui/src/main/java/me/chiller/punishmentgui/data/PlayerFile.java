@@ -144,7 +144,8 @@ public class PlayerFile
 			case PERM_BAN:
 			case PERM_MUTE:
 				return true;
-			default: return false;
+			default:
+				return false;
 		}
 	}
 	
@@ -158,8 +159,9 @@ public class PlayerFile
 	 */
 	public String getExpiration(PunishType type)
 	{
-		if (!isPunishmentActive(type)) return "";
-		
+		if (!isPunishmentActive(type))
+			return "";
+			
 		long expiration = type == PunishType.TEMP_BAN ? banExpiration : muteExpiration;
 		
 		return Util.getFormattedDate(expiration);
@@ -324,7 +326,7 @@ public class PlayerFile
 			e.printStackTrace();
 		}
 	}
-
+	
 	public OfflinePlayer getPlayer()
 	{
 		return Bukkit.getOfflinePlayer(id);
@@ -333,5 +335,29 @@ public class PlayerFile
 	public UUID getUUID()
 	{
 		return id;
+	}
+	
+	public boolean hasAnyInfraction()
+	{
+		return infractions != 0;
+	}
+	
+	public void clearCurrentInfractions()
+	{
+		infractions = 0;
+		
+		Iterator<Map.Entry<Long, Infraction>> iter = infractionHistory.entrySet().iterator();
+		
+		while (iter.hasNext())
+		{
+			Map.Entry<Long, Infraction> entry = iter.next();
+			
+			if (entry.getValue().isActive())
+			{
+				iter.remove();
+			}
+		}
+		
+		save();
 	}
 }

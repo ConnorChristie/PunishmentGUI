@@ -13,6 +13,8 @@ commands:
 permissions:
   punish.use:
     description: 'Gives the ability to use the punish GUI'
+  punish.protected:
+    description: 'Protects the player from being punished'
   punish.temp_mute:
     description: 'Gives the ability to temp mute a player in the GUI'
   punish.temp_ban:
