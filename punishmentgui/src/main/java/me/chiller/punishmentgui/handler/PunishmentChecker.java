@@ -60,7 +60,7 @@ public class PunishmentChecker implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onChat(AsyncPlayerChatEvent e)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(e.getPlayer().getUniqueId());

@@ -2,6 +2,9 @@ package me.chiller.punishmentgui.core;
 
 import me.chiller.punishmentgui.data.Infraction;
 import me.chiller.punishmentgui.data.PlayerFile;
+import me.chiller.punishmentgui.external.Metrics;
+import me.chiller.punishmentgui.external.Updater;
+import me.chiller.punishmentgui.external.Updater.UpdateType;
 import me.chiller.punishmentgui.handler.PunishmentChecker;
 import me.chiller.punishmentgui.invgui.GUIClickListener;
 import me.chiller.punishmentgui.invgui.GUIConstructor;
@@ -33,6 +36,10 @@ public class Main extends JavaPlugin
 		playerFiles = new HashMap<UUID, PlayerFile>();
 		
 		setUpConfig();
+		
+		runUpdater();
+		runPluginMetrics();
+		
 		loadPlayerFiles();
 		
 		registerCommands();
@@ -42,7 +49,27 @@ public class Main extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		
+	
+	}
+	
+	private void runUpdater()
+	{
+		new Updater(this, 0 /* Replace with bukkit dev id once approved */, getFile(), UpdateType.DEFAULT, true);
+	}
+	
+	private void runPluginMetrics()
+	{
+		try
+		{
+			Metrics pm = new Metrics(this);
+			
+			boolean didMetricsLoad = pm.start();
+			
+			if (!didMetricsLoad)
+			{
+				getLogger().info("Plugin metrics is disabled. This will not affect the performance of PunishmentGUI.");
+			}
+		} catch (IOException e) { }
 	}
 	
 	public PlayerFile getPlayerFile(UUID uuid)
@@ -53,7 +80,12 @@ public class Main extends JavaPlugin
 		}
 		
 		File file = new File(playersDir, uuid.toString() + ".yml");
-		try { file.createNewFile(); } catch (IOException e) { }
+		try
+		{
+			file.createNewFile();
+		} catch (IOException e)
+		{
+		}
 		
 		PlayerFile playerFile = new PlayerFile(uuid, file);
 		playerFiles.put(uuid, playerFile);
