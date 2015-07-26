@@ -100,6 +100,9 @@ public class GUIConstructor implements CommandExecutor
 						{
 							Util.sendMessage("That player does not exist!", player, DARK_RED);
 						}
+					} else
+					{
+						Util.sendMessage("Usage: /" + label + " <player> <reason>", player, DARK_RED);
 					}
 				} else
 				{
@@ -300,25 +303,25 @@ public class GUIConstructor implements CommandExecutor
 			Class<?> NBTTagList = NMSHelper.importClass("net.minecraft.server._version_.NBTTagList");
 			Class<?> NBTBase = NMSHelper.importClass("net.minecraft.server._version_.NBTBase");
 			
-			Object nmsStack = NMSHelper.callStaticMethod(CraftItemStack, "asNMSCopy", item);
+			Object nmsStack = NMSHelper.buildStaticMethod(CraftItemStack).addUniversalMethod("asNMSCopy").execute(item);
 			Object tag = null;
 			
-			if (!((Boolean) NMSHelper.callMethod("hasTag", nmsStack)))
+			if (!((Boolean) NMSHelper.buildMethod(nmsStack).addUniversalMethod("hasTag").execute()))
 			{
 				tag = NMSHelper.newInstance(NBTTagCompound);
 				
-				NMSHelper.callMethod("setTag", nmsStack, tag);
+				NMSHelper.buildMethod(nmsStack).addUniversalMethod("setTag").execute(tag);
 			} else
 			{
-				tag = NMSHelper.callMethod("getTag", nmsStack);
+				tag = NMSHelper.buildMethod(nmsStack).addUniversalMethod("getTag").execute();
 			}
 			
 			Object ench = NMSHelper.newInstance(NBTTagList);
 			
-			NMSHelper.callMethod("set", tag, new Class<?>[] { String.class, NBTBase }, "ench", ench);
-			NMSHelper.callMethod("setTag", nmsStack, tag);
+			NMSHelper.buildMethod(tag).addUniversalMethod("set", String.class, NBTBase).execute("ench", ench);
+			NMSHelper.buildMethod(nmsStack).addUniversalMethod("setTag").execute(tag);
 			
-			ItemStack stack = (ItemStack) NMSHelper.callStaticMethod(CraftItemStack, "asCraftMirror", nmsStack);
+			ItemStack stack = (ItemStack) NMSHelper.buildStaticMethod(CraftItemStack).addUniversalMethod("asCraftMirror").execute(nmsStack);
 			
 			return stack;
 		} catch (IllegalAccessException e)
@@ -337,9 +340,6 @@ public class GUIConstructor implements CommandExecutor
 		{
 			e.printStackTrace();
 		} catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (InstantiationException e)
 		{
 			e.printStackTrace();
 		} catch (Exception e)
