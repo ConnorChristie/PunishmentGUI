@@ -40,7 +40,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Util.sendMessage(Message.TEMP_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendMessage(Message.TEMP_MUTE.replace("%reason%", reason).replace("%date%", file.getExpiration(PunishType.TEMP_MUTE)).replace("%punisher%", punisherName), ((Player) player));
 			Util.sendSuffix((Player) player);
 		}
 	}
@@ -68,7 +68,7 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Message.TEMP_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
+			((Player) player).kickPlayer(Message.TEMP_BAN.replace("%reason%", reason).replace("%date%", file.getExpiration(PunishType.TEMP_BAN)).replace("%punisher%", punisherName));
 		}
 	}
 	

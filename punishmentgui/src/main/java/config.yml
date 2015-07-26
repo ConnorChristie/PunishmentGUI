@@ -20,8 +20,8 @@ messages:
   perm_muted: '%message_prefix% &4You are permanently muted for &6%reason% &4by &3%punisher%'
   temp_muted: '%message_prefix% &4You are muted until &b%date% &4for &6%reason% &4by
     &3%punisher%'
-  perm_ban_unknown: 'You have been banned for an unknown reason.#n%message_suffix%'
-  perm_ban_unknown: 'You have been banned for an unknown reason and an undeclared amount of time.#n%message_suffix%'
+  perm_ban_unknown: '%message_prefix% &4You have been banned for an unknown reason#n%message_suffix%'
+  temp_ban_unknown: '%message_prefix% &4You have been banned for an unknown reason at an unknown time#n%message_suffix%'
 lore:
   history: '&6Reason: &c%reason%#n&6Given by: &c%punisher%#n&6Date: &c%date%'
   history_removed_by: '#n&6Removed by: &c%remover%#n&6Removed reason: &c%remove_reason%'
