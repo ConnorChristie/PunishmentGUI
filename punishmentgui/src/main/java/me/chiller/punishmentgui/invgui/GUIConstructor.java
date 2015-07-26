@@ -5,6 +5,7 @@ import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
 import me.chiller.punishmentgui.resources.Message;
 import me.chiller.punishmentgui.resources.Permission;
+import me.chiller.punishmentgui.util.NMSHelper;
 import me.chiller.punishmentgui.util.Util;
 
 import org.bukkit.Bukkit;
@@ -88,7 +89,7 @@ public class GUIConstructor implements CommandExecutor
 								// Combine reason
 								for (int i = 1; i < args.length; i++)
 									builder.append((i == 1 ? "" : " ") + args[i]);
-								
+									
 								// Send menu
 								openPlayerPunishMenu(pl, player, builder.toString());
 							} else
@@ -99,6 +100,9 @@ public class GUIConstructor implements CommandExecutor
 						{
 							Util.sendMessage("That player does not exist!", player, DARK_RED);
 						}
+					} else
+					{
+						Util.sendMessage("Usage: /" + label + " <player> <reason>", player, DARK_RED);
 					}
 				} else
 				{
@@ -292,35 +296,34 @@ public class GUIConstructor implements CommandExecutor
 	{
 		try
 		{
-			String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+			NMSHelper.importClass("net.minecraft.server._version_.ItemStack");
 			
-			Class<?> CraftItemStack = Class.forName("org.bukkit.craftbukkit." + version + ".inventory.CraftItemStack");
-			Class<?> ItemStack = Class.forName("net.minecraft.server." + version + ".ItemStack");
-			Class<?> NBTTagCompound = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
-			Class<?> NBTTagList = Class.forName("net.minecraft.server." + version + ".NBTTagList");
-			Class<?> NBTBase = Class.forName("net.minecraft.server." + version + ".NBTBase");
+			Class<?> CraftItemStack = NMSHelper.importClass("org.bukkit.craftbukkit._version_.inventory.CraftItemStack");
+			Class<?> NBTTagCompound = NMSHelper.importClass("net.minecraft.server._version_.NBTTagCompound");
+			Class<?> NBTTagList = NMSHelper.importClass("net.minecraft.server._version_.NBTTagList");
+			Class<?> NBTBase = NMSHelper.importClass("net.minecraft.server._version_.NBTBase");
 			
-			Object nmsStack = CraftItemStack.getMethod("asNMSCopy", ItemStack.class).invoke(null, item);
+			Object nmsStack = NMSHelper.buildStaticMethod(CraftItemStack).addUniversalMethod("asNMSCopy").execute(item);
 			Object tag = null;
 			
-			if (!((Boolean) nmsStack.getClass().getMethod("hasTag").invoke(nmsStack)))
+			if (!((Boolean) NMSHelper.buildMethod(nmsStack).addUniversalMethod("hasTag").execute()))
 			{
-				tag = NBTTagCompound.newInstance();
+				tag = NMSHelper.newInstance(NBTTagCompound);
 				
-				nmsStack.getClass().getMethod("setTag", NBTTagCompound).invoke(nmsStack, tag);
-			}
-			
-			if (tag == null)
+				NMSHelper.buildMethod(nmsStack).addUniversalMethod("setTag").execute(tag);
+			} else
 			{
-				tag = nmsStack.getClass().getMethod("getTag").invoke(nmsStack);
+				tag = NMSHelper.buildMethod(nmsStack).addUniversalMethod("getTag").execute();
 			}
 			
-			Object ench = NBTTagList.newInstance();
+			Object ench = NMSHelper.newInstance(NBTTagList);
 			
-			tag.getClass().getMethod("set", String.class, NBTBase).invoke(tag, "ench", ench);
-			nmsStack.getClass().getMethod("setTag", NBTTagCompound).invoke(nmsStack, tag);
+			NMSHelper.buildMethod(tag).addUniversalMethod("set", String.class, NBTBase).execute("ench", ench);
+			NMSHelper.buildMethod(nmsStack).addUniversalMethod("setTag").execute(tag);
 			
-			return (ItemStack) CraftItemStack.getMethod("asCraftMirror", ItemStack).invoke(null, nmsStack);
+			ItemStack stack = (ItemStack) NMSHelper.buildStaticMethod(CraftItemStack).addUniversalMethod("asCraftMirror").execute(nmsStack);
+			
+			return stack;
 		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
@@ -339,7 +342,7 @@ public class GUIConstructor implements CommandExecutor
 		} catch (ClassNotFoundException e)
 		{
 			e.printStackTrace();
-		} catch (InstantiationException e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}

@@ -8,7 +8,7 @@ commands:
     description: 'Punishes the given player'
     usage: '§c§lPUNISH §r§6Do /punish <PlayerName> <Reason>'
     aliases: p
-    permission: 'punishment.use'
+    permission: 'punish.use'
     permission-message: ''
 permissions:
   punish.use:
