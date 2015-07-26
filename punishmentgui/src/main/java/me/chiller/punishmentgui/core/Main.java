@@ -36,7 +36,7 @@ public class Main extends JavaPlugin
 		
 		setUpConfig();
 		
-		//runUpdater();
+		runUpdater();
 		runPluginMetrics();
 		
 		loadPlayerFiles();
@@ -53,7 +53,7 @@ public class Main extends JavaPlugin
 	
 	private void runUpdater()
 	{
-		new Updater(this, 0 /* Replace with bukkit dev id once approved */, getFile(), UpdateType.DEFAULT, true);
+		new Updater(this, 93800, getFile(), UpdateType.DEFAULT, true);
 	}
 	
 	private void runPluginMetrics()
