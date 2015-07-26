@@ -13,3 +13,6 @@ Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCr
 - **/punish \<player\> \<reason\>** - Opens the punishment GUI for that player
   - Requires permission: punish.use
 - **/p \<player\> \<reason\>** - Same as above
+
+### Todo
+- Add motd status if banned or muted
