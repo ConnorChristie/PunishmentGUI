@@ -5,6 +5,7 @@ import me.chiller.punishmentgui.data.PlayerFile;
 import me.chiller.punishmentgui.data.PunishType;
 import me.chiller.punishmentgui.resources.Message;
 import me.chiller.punishmentgui.resources.Permission;
+import me.chiller.punishmentgui.util.NMSHelper;
 import me.chiller.punishmentgui.util.Util;
 
 import org.bukkit.Bukkit;
@@ -88,7 +89,7 @@ public class GUIConstructor implements CommandExecutor
 								// Combine reason
 								for (int i = 1; i < args.length; i++)
 									builder.append((i == 1 ? "" : " ") + args[i]);
-								
+									
 								// Send menu
 								openPlayerPunishMenu(pl, player, builder.toString());
 							} else
@@ -292,35 +293,34 @@ public class GUIConstructor implements CommandExecutor
 	{
 		try
 		{
-			String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+			NMSHelper.importClass("net.minecraft.server._version_.ItemStack");
 			
-			Class<?> CraftItemStack = Class.forName("org.bukkit.craftbukkit." + version + ".inventory.CraftItemStack");
-			Class<?> ItemStack = Class.forName("net.minecraft.server." + version + ".ItemStack");
-			Class<?> NBTTagCompound = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
-			Class<?> NBTTagList = Class.forName("net.minecraft.server." + version + ".NBTTagList");
-			Class<?> NBTBase = Class.forName("net.minecraft.server." + version + ".NBTBase");
+			Class<?> CraftItemStack = NMSHelper.importClass("org.bukkit.craftbukkit._version_.inventory.CraftItemStack");
+			Class<?> NBTTagCompound = NMSHelper.importClass("net.minecraft.server._version_.NBTTagCompound");
+			Class<?> NBTTagList = NMSHelper.importClass("net.minecraft.server._version_.NBTTagList");
+			Class<?> NBTBase = NMSHelper.importClass("net.minecraft.server._version_.NBTBase");
 			
-			Object nmsStack = CraftItemStack.getMethod("asNMSCopy", ItemStack.class).invoke(null, item);
+			Object nmsStack = NMSHelper.callStaticMethod(CraftItemStack, "asNMSCopy", item);
 			Object tag = null;
 			
-			if (!((Boolean) nmsStack.getClass().getMethod("hasTag").invoke(nmsStack)))
+			if (!((Boolean) NMSHelper.callMethod("hasTag", nmsStack)))
 			{
-				tag = NBTTagCompound.newInstance();
+				tag = NMSHelper.newInstance(NBTTagCompound);
 				
-				nmsStack.getClass().getMethod("setTag", NBTTagCompound).invoke(nmsStack, tag);
-			}
-			
-			if (tag == null)
+				NMSHelper.callMethod("setTag", nmsStack, tag);
+			} else
 			{
-				tag = nmsStack.getClass().getMethod("getTag").invoke(nmsStack);
+				tag = NMSHelper.callMethod("getTag", nmsStack);
 			}
 			
-			Object ench = NBTTagList.newInstance();
+			Object ench = NMSHelper.newInstance(NBTTagList);
 			
-			tag.getClass().getMethod("set", String.class, NBTBase).invoke(tag, "ench", ench);
-			nmsStack.getClass().getMethod("setTag", NBTTagCompound).invoke(nmsStack, tag);
+			NMSHelper.callMethod("set", tag, new Class<?>[] { String.class, NBTBase }, "ench", ench);
+			NMSHelper.callMethod("setTag", nmsStack, tag);
 			
-			return (ItemStack) CraftItemStack.getMethod("asCraftMirror", ItemStack).invoke(null, nmsStack);
+			ItemStack stack = (ItemStack) NMSHelper.callStaticMethod(CraftItemStack, "asCraftMirror", nmsStack);
+			
+			return stack;
 		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
@@ -340,6 +340,9 @@ public class GUIConstructor implements CommandExecutor
 		{
 			e.printStackTrace();
 		} catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
