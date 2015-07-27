@@ -21,26 +21,22 @@ public class PunishDealer
 	public static void warn(OfflinePlayer player, String punisherName, String reason)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
-		
 		file.saveInfraction(new Infraction(PunishType.WARN, reason, System.currentTimeMillis(), punisherName));
-		file.save();
 		
 		if (player.isOnline())
 		{
-			Util.sendMessage(Message.WARN.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendMessage(Message.WARN.replace("{reason}", reason).replace("{punisher}", punisherName), ((Player) player));
 		}
 	}
 	
 	public static void tempMute(OfflinePlayer player, String punisherName, String reason)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
-		
 		file.saveInfraction(new Infraction(PunishType.TEMP_MUTE, reason, System.currentTimeMillis(), punisherName));
-		file.save();
 		
 		if (player.isOnline())
 		{
-			Util.sendMessage(Message.TEMP_MUTE.replace("%reason%", reason).replace("%date%", file.getExpiration(PunishType.TEMP_MUTE)).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendMessage(Message.TEMP_MUTE.replace("{reason}", reason).replace("{date}", file.getExpiration(PunishType.TEMP_MUTE)).replace("{punisher}", punisherName), ((Player) player));
 			Util.sendSuffix((Player) player);
 		}
 	}
@@ -52,36 +48,30 @@ public class PunishDealer
 		
 		if (player.isOnline())
 		{
-			Util.sendMessage(Message.PERM_MUTE.replace("%reason%", reason).replace("%punisher%", punisherName), ((Player) player));
+			Util.sendMessage(Message.PERM_MUTE.replace("{reason}", reason).replace("{punisher}", punisherName), ((Player) player));
 			Util.sendSuffix((Player) player);
 		}
-		
-		file.save();
 	}
 	
 	public static void tempBan(OfflinePlayer player, String punisherName, String reason)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
-		
 		file.saveInfraction(new Infraction(PunishType.TEMP_BAN, reason, System.currentTimeMillis(), punisherName));
-		file.save();
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Message.TEMP_BAN.replace("%reason%", reason).replace("%date%", file.getExpiration(PunishType.TEMP_BAN)).replace("%punisher%", punisherName));
+			((Player) player).kickPlayer(Message.TEMP_BAN.replace("{reason}", reason).replace("{date}", file.getExpiration(PunishType.TEMP_BAN)).replace("{punisher}", punisherName));
 		}
 	}
 	
 	public static void permBan(OfflinePlayer player, String punisherName, String reason)
 	{
 		PlayerFile file = Main.getInstance().getPlayerFile(player.getUniqueId());
-		
 		file.saveInfraction(new Infraction(PunishType.PERM_BAN, reason, System.currentTimeMillis(), punisherName));
-		file.save();
 		
 		if (player.isOnline())
 		{
-			((Player) player).kickPlayer(Message.PERM_BAN.replace("%reason%", reason).replace("%punisher%", punisherName));
+			((Player) player).kickPlayer(Message.PERM_BAN.replace("{reason}", reason).replace("{punisher}", punisherName));
 		}
 	}
 	

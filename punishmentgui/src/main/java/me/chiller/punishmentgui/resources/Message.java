@@ -6,36 +6,53 @@ import me.chiller.punishmentgui.core.Main;
 
 public enum Message
 {
-	MESSAGE_PREFIX("%message_prefix%", "&c&lPUNISH&r",                                   Type.PREFIX_SUFFIX),
-	MESSAGE_SUFFIX("%message_suffix%", "&aUnfairly punished? Contact us on the forums!", Type.PREFIX_SUFFIX),
+	MESSAGE_PREFIX("{message_prefix}", "&c&lPUNISH&r",                                   Type.PREFIX_SUFFIX),
+	MESSAGE_SUFFIX("{message_suffix}", "&aUnfairly punished? Contact us on the forums!", Type.PREFIX_SUFFIX),
 	
-	WARN(     "", "%message_prefix% &4You have been warned &6(%reason%) &4by &6%punisher%",                                  Type.MESSAGE),
-	PERM_BAN( "", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%#n%message_suffix%",    Type.MESSAGE),
-	PERM_MUTE("", "%message_prefix% &4You have been permanantly muted &6(%reason%) &4by &6%punisher%",                       Type.MESSAGE),
-	TEMP_BAN( "", "%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by &6%punisher%#n%message_suffix%", Type.MESSAGE),
-	TEMP_MUTE("", "%message_prefix% &4You have been temporarily muted &6(%reason%) &4by &6%punisher%",                       Type.MESSAGE),
+	WARN(     "", "{message_prefix} &4You have been warned &6({reason}) &4by &6{punisher}",                                  Type.MESSAGE),
+	PERM_BAN( "", "{message_prefix} &4You have been permanently banned &6({reason}) &4by &6{punisher}#n{message_suffix}",    Type.MESSAGE),
+	PERM_MUTE("", "{message_prefix} &4You have been permanently muted &6({reason}) &4by &6{punisher}",                       Type.MESSAGE),
+	TEMP_BAN( "", "{message_prefix} &4You have been banned until &b{date} &6({reason}) &4by &6{punisher}#n{message_suffix}", Type.MESSAGE),
+	TEMP_MUTE("", "{message_prefix} &4You have been temporarily muted &6({reason}) &4by &6{punisher}",                       Type.MESSAGE),
 	
-	UNMUTE(    "", "%message_prefix% &aYou are no longer muted.",                                        Type.MESSAGE),
-	PERM_MUTED("", "%message_prefix% &4You are permanently muted for &6%reason% &4by &3%punisher%",      Type.MESSAGE),
-	TEMP_MUTED("", "%message_prefix% &4You are muted until &b%date% &4for &6%reason% &4by &3%punisher%", Type.MESSAGE),
+	UNMUTE(    "", "{message_prefix} &aYou are no longer muted.",                                        Type.MESSAGE),
+	PERM_MUTED("", "{message_prefix} &4You are permanently muted for &6{reason} &4by &3{punisher}",      Type.MESSAGE),
+	TEMP_MUTED("", "{message_prefix} &4You are muted until &b{date} &4for &6{reason} &4by &3{punisher}", Type.MESSAGE),
 	
-	LOGIN_PERM_BAN("", "%message_prefix% &4You have been permanantly banned &6(%reason%) &4by &6%punisher%#n%message_suffix%",    Type.MESSAGE),
-	LOGIN_TEMP_BAN("", "%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by &6%punisher%#n%message_suffix%", Type.MESSAGE),
+	LOGIN_PERM_BAN("", "{message_prefix} &4You have been permanently banned &6({reason}) &4by &6{punisher}#n{message_suffix}",    Type.MESSAGE),
+	LOGIN_TEMP_BAN("", "{message_prefix} &4You have been banned until &b{date} &6({reason}) &4by &6{punisher}#n{message_suffix}", Type.MESSAGE),
 	
-	NOT_PUNISHABLE(  "", "%message_prefix% &4You are not allowed to punish &6%punished%",                                      Type.MESSAGE),
-	PERM_BAN_UNKNOWN("", "%message_prefix% &4You have been banned for an unknown reason#n%message_suffix%",                    Type.MESSAGE),
-	TEMP_BAN_UNKNOWN("", "%message_prefix% &4You have been banned for an unknown reason at an unknown time#n%message_suffix%", Type.MESSAGE),
+	NOT_PUNISHABLE(  "", "{message_prefix} &4You are not allowed to punish &6{punished}",                                      Type.MESSAGE),
+	PERM_BAN_UNKNOWN("", "{message_prefix} &4You have been banned for an unknown reason#n{message_suffix}",                    Type.MESSAGE),
+	TEMP_BAN_UNKNOWN("", "{message_prefix} &4You have been banned for an unknown reason at an unknown time#n{message_suffix}", Type.MESSAGE),
 	
-	HISTORY(           "", "&6Reason: &c%reason%#n&6Given by: &c%punisher%#n&6Date: &c%date%", Type.LORE),
-	HISTORY_REMOVED_BY("", "#n&6Removed by: &c%remover%#n&6Removed reason: &c%remove_reason%", Type.LORE);
+	MOTD_PERM_BAN( "", "&4You are permanently banned by &3{punisher} &4for &6{reason}",      Type.MESSAGE),
+	MOTD_PERM_MUTE("", "&4You are permanently muted by &3{punisher} &4for &6{reason}",       Type.MESSAGE),
+	MOTD_TEMP_BAN( "", "&4You are banned until &b{date} &4by &3{punisher} &4for &6{reason}", Type.MESSAGE),
+	MOTD_TEMP_MUTE("", "&4You are muted until &b{date} &4by &3{punisher} &4for &6{reason}",  Type.MESSAGE),
+	
+	MOTD_BAN_UNKNOWN( "", "&4You have been banned for an unknown reason", Type.MESSAGE),
+	MOTD_MUTE_UNKNOWN("", "&4You have been muted for an unknown reason",  Type.MESSAGE),
+	
+	HISTORY(           "", "&6Reason: &c{reason}#n&6Given by: &c{punisher}#n&6Date: &c{date}", Type.LORE),
+	HISTORY_REMOVED_BY("", "#n&6Removed by: &c{remover}#n&6Removed reason: &c{remove_reason}", Type.LORE);
 	
 	static
 	{
 		for (Message message : values())
 		{
-			message.value = ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig().getString(message.type.getKey() + message.getKey(), message.def));
+			String value = Main.getInstance().getConfig().getString(message.type.getKey() + message.getKey());
+			if (value == null) Main.getInstance().getConfig().set(message.type.getKey() + message.getKey(), value = message.def);
 			
+			String updatedValue = value.contains("%") ? value.replaceAll("%(.*?)%", "{$1}") : value;
+			
+			message.value = ChatColor.translateAlternateColorCodes('&', updatedValue);
 			if (message.type != Type.LORE) message.value = message.value.replace("#n", "\n");
+			
+			if (!value.equals(updatedValue))
+			{
+				Main.getInstance().getConfig().set(message.type.getKey() + message.getKey(), updatedValue);
+			}
 		}
 		
 		for (Message message : values())
@@ -47,6 +64,8 @@ public enum Message
 				message.value = message.value.replace(replacement.getReplacement(), replacement.value);
 			}
 		}
+		
+		Main.getInstance().saveConfig();
 	}
 	
 	protected String replacement;

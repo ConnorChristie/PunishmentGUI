@@ -94,7 +94,7 @@ public class GUIConstructor implements CommandExecutor
 								openPlayerPunishMenu(pl, player, builder.toString());
 							} else
 							{
-								Util.sendMessage(Message.NOT_PUNISHABLE.replace("%punished%", pl.getName()), player);
+								Util.sendMessage(Message.NOT_PUNISHABLE.replace("{punished}", pl.getName()), player);
 							}
 						} else
 						{

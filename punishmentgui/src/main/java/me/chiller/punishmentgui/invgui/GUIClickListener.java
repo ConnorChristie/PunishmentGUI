@@ -244,16 +244,16 @@ public class GUIClickListener implements Listener
 				ItemStack itemStack = currentInfraction.getType().getItem().clone();
 				
 				String[] loreHistory = Message.HISTORY
-						.replace("%reason%", currentInfraction.getReason())
-						.replace("%punisher%", currentInfraction.getGivenBy())
-						.replace("%date%", currentInfraction.getDateString())
+						.replace("{reason}", currentInfraction.getReason())
+						.replace("{punisher}", currentInfraction.getGivenBy())
+						.replace("{date}", currentInfraction.getDateString())
 						.split("#n");
 				
 				if (!currentInfraction.getRemovedBy().isEmpty() && !currentInfraction.getRemoveReason().isEmpty())
 				{
 					String[] loreHistoryRemovedBy = Message.HISTORY_REMOVED_BY
-							.replace("%remover%", currentInfraction.getRemovedBy())
-							.replace("%remove_reason%", currentInfraction.getRemoveReason())
+							.replace("{remover}", currentInfraction.getRemovedBy())
+							.replace("{remove_reason}", currentInfraction.getRemoveReason())
 							.split("#n");
 					
 					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()), (String[]) ArrayUtils.addAll(loreHistory, loreHistoryRemovedBy));
