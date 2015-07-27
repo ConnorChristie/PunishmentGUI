@@ -82,14 +82,25 @@ public class Main extends JavaPlugin
 		try
 		{
 			file.createNewFile();
-		} catch (IOException e)
-		{
-		}
+		} catch (IOException e) { }
 		
 		PlayerFile playerFile = new PlayerFile(uuid, file);
 		playerFiles.put(uuid, playerFile);
 		
 		return playerFile;
+	}
+	
+	public PlayerFile getPlayerFile(String ip)
+	{
+		for (PlayerFile file : playerFiles.values())
+		{
+			if (file.getIp().equals(ip))
+			{
+				return file;
+			}
+		}
+		
+		return null;
 	}
 	
 	private void registerCommands()

@@ -2,29 +2,35 @@
 message_prefix: '&c&lPUNISH&r'
 message_suffix: '&aUnfairly punished? Contact us on the forums!'
 messages:
-  warn: '%message_prefix% &4You have been warned &6(%reason%) &4by &6%punisher%'
-  unmute: '%message_prefix% &aYou are no longer muted.'
-  perm_ban: '%message_prefix% &4You have been permanantly banned &6(%reason%) &4by
-    &6%punisher%#n%message_suffix%'
-  perm_mute: '%message_prefix% &4You have been permanantly muted &6(%reason%) &4by
-    &6%punisher%'
-  temp_ban: '%message_prefix% &4You have been banned until &b%date% &6(%reason%) &4by
-    &6%punisher%#n%message_suffix%'
-  temp_mute: '%message_prefix% &4You have been temporarily muted &6(%reason%) &4by
-    &6%punisher%'
-  login_perm_ban: '%message_prefix% &4You have been permanantly banned &6(%reason%)
-    &4by &6%punisher%#n%message_suffix%'
-  login_temp_ban: '%message_prefix% &4You have been banned until &b%date% &6(%reason%)
-    &4by &6%punisher%#n%message_suffix%'
-  not_punishable: '%message_prefix% &4You are not allowed to punish &6%punished%'
-  perm_muted: '%message_prefix% &4You are permanently muted for &6%reason% &4by &3%punisher%'
-  temp_muted: '%message_prefix% &4You are muted until &b%date% &4for &6%reason% &4by
-    &3%punisher%'
-  perm_ban_unknown: '%message_prefix% &4You have been banned for an unknown reason#n%message_suffix%'
-  temp_ban_unknown: '%message_prefix% &4You have been banned for an unknown reason at an unknown time#n%message_suffix%'
+  warn: '{message_prefix} &4You have been warned &6({reason}) &4by &6{punisher}'
+  unmute: '{message_prefix} &aYou are no longer muted.'
+  perm_ban: '{message_prefix} &4You have been permanently banned &6({reason}) &4by
+    &6{punisher}#n{message_prefix}'
+  perm_mute: '{message_prefix} &4You have been permanently muted &6({reason}) &4by
+    &6{punisher}'
+  temp_ban: '{message_prefix} &4You have been banned until &b{date} &6({reason}) &4by
+    &6{punisher}#n{message_prefix}'
+  temp_mute: '{message_prefix} &4You have been temporarily muted &6({reason}) &4by
+    &6{punisher}'
+  login_perm_ban: '{message_prefix} &4You have been permanently banned &6({reason})
+    &4by &6{punisher}#n{message_prefix}'
+  login_temp_ban: '{message_prefix} &4You have been banned until &b{date} &6({reason})
+    &4by &6{punisher}#n{message_prefix}'
+  not_punishable: '{message_prefix} &4You are not allowed to punish &6{punished}'
+  perm_muted: '{message_prefix} &4You are permanently muted for &6{reason} &4by &3{punisher}'
+  temp_muted: '{message_prefix} &4You are muted until &b{date} &4for &6{reason} &4by
+    &3{punisher}'
+  perm_ban_unknown: '{message_prefix} &4You have been banned for an unknown reason#n{message_prefix}'
+  temp_ban_unknown: '{message_prefix} &4You have been banned for an unknown reason at an unknown time#n{message_prefix}'
+  motd_perm_ban: '&4You are permanently banned by &3{punisher} &4for &6{reason}'
+  motd_perm_mute: '&4You are permanently muted by &3{punisher} &4for &6{reason}'
+  motd_temp_ban: '&4You are banned until &b{date} &4by &3{punisher} &4for &6{reason}'
+  motd_temp_mute: '&4You are muted until &b{date} &4by &3{punisher} &4for &6{reason}'
+  motd_ban_unknown: '&4You have been banned for an unknown reason'
+  motd_mute_unknown: '&4You have been muted for an unknown reason'
 lore:
-  history: '&6Reason: &c%reason%#n&6Given by: &c%punisher%#n&6Date: &c%date%'
-  history_removed_by: '#n&6Removed by: &c%remover%#n&6Removed reason: &c%remove_reason%'
+  history: '&6Reason: &c{reason}#n&6Given by: &c{punisher}#n&6Date: &c{date}'
+  history_removed_by: '#n&6Removed by: &c{remover}#n&6Removed reason: &c{remove_reason}'
 time:
   ban_increment: 240
   mute_increment: 120
