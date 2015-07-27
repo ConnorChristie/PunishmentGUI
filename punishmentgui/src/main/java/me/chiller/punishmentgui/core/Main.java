@@ -137,9 +137,20 @@ public class Main extends JavaPlugin
 		getConfig().options().header("Time increments are in seconds");
 		getConfig().options().copyDefaults(true);
 		
+		updateConfig();
 		saveConfig();
 		
 		ConfigurationSerialization.registerClass(Infraction.class);
+	}
+	
+	private void updateConfig()
+	{
+		if (!getConfig().contains("motd_infraction_status"))
+		{
+			getConfig().set("motd_infraction_status", true);
+		}
+		
+		//All other messages that are not already in the config update in the Message class
 	}
 	
 	public static Main getInstance()
