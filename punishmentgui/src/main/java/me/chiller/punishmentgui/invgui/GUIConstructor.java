@@ -82,7 +82,7 @@ public class GUIConstructor implements CommandExecutor
 						
 						if (pl.hasPlayedBefore() || pl.isOnline())
 						{
-							if (pl.isOnline() && !pl.getPlayer().hasPermission(Permission.PUNISH_PROTECTED.toString()))
+							if ((pl.isOnline() && !pl.getPlayer().hasPermission(Permission.PUNISH_PROTECTED.toString())) || !pl.isOnline())
 							{
 								StringBuilder builder = new StringBuilder();
 								
