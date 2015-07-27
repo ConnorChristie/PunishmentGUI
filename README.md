@@ -15,4 +15,4 @@ Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCr
 - **/p \<player\> \<reason\>** - Same as above
 
 ### Todo
-- Add motd status if banned or muted
+- ~~Add motd status if banned or muted~~
