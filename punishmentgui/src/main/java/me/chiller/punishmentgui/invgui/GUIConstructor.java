@@ -82,7 +82,7 @@ public class GUIConstructor implements CommandExecutor
 						
 						if (pl.hasPlayedBefore() || pl.isOnline())
 						{
-							if (pl.isOnline() && !pl.getPlayer().hasPermission(Permission.PUNISH_PROTECTED.toString()))
+							if ((pl.isOnline() && !pl.getPlayer().hasPermission(Permission.PUNISH_PROTECTED.toString())) || !pl.isOnline())
 							{
 								StringBuilder builder = new StringBuilder();
 								
@@ -94,7 +94,7 @@ public class GUIConstructor implements CommandExecutor
 								openPlayerPunishMenu(pl, player, builder.toString());
 							} else
 							{
-								Util.sendMessage(Message.NOT_PUNISHABLE.replace("%punished%", pl.getName()), player);
+								Util.sendMessage(Message.NOT_PUNISHABLE.replace("{punished}", pl.getName()), player);
 							}
 						} else
 						{
@@ -176,7 +176,7 @@ public class GUIConstructor implements CommandExecutor
 			ItemMeta meta = permBan.getItemMeta();
 			List<String> lore = permBan.getItemMeta().getLore();
 			
-			lore.add(0, PunishType.ACTIVE_TAG.toString());
+			lore.add(1, PunishType.ACTIVE_TAG.toString());
 			meta.setLore(lore);
 			
 			permBan.setItemMeta(meta);
@@ -195,7 +195,7 @@ public class GUIConstructor implements CommandExecutor
 			ItemMeta meta = permMute.getItemMeta();
 			List<String> lore = permMute.getItemMeta().getLore();
 			
-			lore.add(0, PunishType.ACTIVE_TAG.toString());
+			lore.add(1, PunishType.ACTIVE_TAG.toString());
 			meta.setLore(lore);
 			
 			permMute.setItemMeta(meta);
@@ -214,7 +214,8 @@ public class GUIConstructor implements CommandExecutor
 			ItemMeta meta = tempBan.getItemMeta();
 			List<String> lore = tempBan.getItemMeta().getLore();
 			
-			lore.add(0, PunishType.ACTIVE_TAG.toString());
+			lore.add(1, PunishType.ACTIVE_TAG.toString());
+			lore.add(2, GOLD + "Expires: " + RED + file.getExpiration(PunishType.TEMP_BAN));
 			meta.setLore(lore);
 			
 			tempBan.setItemMeta(meta);
@@ -233,7 +234,8 @@ public class GUIConstructor implements CommandExecutor
 			ItemMeta meta = tempMute.getItemMeta();
 			List<String> lore = tempMute.getItemMeta().getLore();
 			
-			lore.add(0, PunishType.ACTIVE_TAG.toString());
+			lore.add(1, PunishType.ACTIVE_TAG.toString());
+			lore.add(2, GOLD + "Expires: " + RED + file.getExpiration(PunishType.TEMP_MUTE));
 			meta.setLore(lore);
 			
 			tempMute.setItemMeta(meta);
@@ -263,16 +265,15 @@ public class GUIConstructor implements CommandExecutor
 	
 	private static void editMetadata(ItemStack stack, PunishType displayName, String... lore)
 	{
-		editMetadata(stack, displayName.toString(), lore);
+		editMetadata(stack, displayName.toString(), Arrays.asList(lore));
 	}
 	
-	public static void editMetadata(ItemStack stack, String displayName, String... lore)
+	public static void editMetadata(ItemStack stack, String displayName, List<String> lore)
 	{
-		List<String> convertedLore = Arrays.asList(lore);
 		ItemMeta meta = stack.getItemMeta();
 		
 		meta.setDisplayName(displayName);
-		meta.setLore(convertedLore);
+		meta.setLore(lore);
 		
 		stack.setItemMeta(meta);
 	}

@@ -7,7 +7,6 @@ import me.chiller.punishmentgui.data.PunishType;
 import me.chiller.punishmentgui.handler.PunishDealer;
 import me.chiller.punishmentgui.resources.Message;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -83,78 +82,28 @@ public class GUIClickListener implements Listener
 			
 			if (displayName == null || type == null) return;
 			
-			switch (type)
+			if (type == PunishType.HISTORICAL_ENTRY)
 			{
-				case WARN:
-					PunishDealer.warn(player, e.getWhoClicked().getName(), reason);
+				closeInventoryRunnable((Player) e.getWhoClicked());
+				openPunishHistoryMenu(player, (Player) e.getWhoClicked());
+			} else
+			{
+				if (file.hasInfraction(type))
+				{
+					PunishDealer.revertPunishment(type, punishedUUID, (Player) e.getWhoClicked(), reason);
+				} else
+				{
+					if (type == PunishType.TEMP_BAN && file.hasInfraction(PunishType.PERM_BAN))
+						file.setPunishmentActivity(PunishType.PERM_BAN, false, (Player) e.getWhoClicked(), "Changed to Temporary Ban");
+					else if (type == PunishType.TEMP_MUTE && file.hasInfraction(PunishType.PERM_MUTE))
+						file.setPunishmentActivity(PunishType.PERM_MUTE, false, (Player) e.getWhoClicked(), "Changed to Temporary Mute");
+					else if (type == PunishType.PERM_BAN && file.hasInfraction(PunishType.TEMP_BAN))
+						file.setPunishmentActivity(PunishType.TEMP_BAN, false, (Player) e.getWhoClicked(), "Changed to Permanent Ban");
+					else if (type == PunishType.PERM_MUTE && file.hasInfraction(PunishType.TEMP_MUTE))
+						file.setPunishmentActivity(PunishType.TEMP_MUTE, false, (Player) e.getWhoClicked(), "Changed to Permanent Mute");
 					
-					break;
-				case TEMP_BAN:
-					if (file.hasInfraction(type))
-					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_BAN, (Player) e.getWhoClicked(), reason);
-					} else
-					{
-						if (file.hasInfraction(PunishType.PERM_BAN))
-						{
-							file.setPunishmentActivity(PunishType.PERM_BAN, false, (Player) e.getWhoClicked(), "Changed to Temporary Ban");
-						}
-						
-						PunishDealer.tempBan(player, e.getWhoClicked().getName(), reason);
-					}
-					
-					break;
-				case TEMP_MUTE:
-					if (file.hasInfraction(type))
-					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.TEMP_MUTE, (Player) e.getWhoClicked(), reason);
-					} else
-					{
-						if (file.hasInfraction(PunishType.PERM_MUTE))
-						{
-							file.setPunishmentActivity(PunishType.PERM_MUTE, false, (Player) e.getWhoClicked(), "Changed to Temporary Mute");
-						}
-						
-						PunishDealer.tempMute(player, e.getWhoClicked().getName(), reason);
-					}
-					
-					break;
-				case PERM_BAN:
-					if (file.hasInfraction(type))
-					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_BAN, (Player) e.getWhoClicked(), reason);
-					} else
-					{
-						if (file.hasInfraction(PunishType.TEMP_BAN))
-						{
-							file.setPunishmentActivity(PunishType.TEMP_BAN, false, (Player) e.getWhoClicked(), "Changed to Permanent Ban");
-						}
-						
-						PunishDealer.permBan(player, e.getWhoClicked().getName(), reason);
-					}
-					
-					break;
-				case PERM_MUTE:
-					if (file.hasInfraction(type))
-					{
-						PunishDealer.revertPunishment(punishedUUID, PunishType.PERM_MUTE, (Player) e.getWhoClicked(), reason);
-					} else
-					{
-						if (file.hasInfraction(PunishType.TEMP_MUTE))
-						{
-							file.setPunishmentActivity(PunishType.TEMP_MUTE, false, (Player) e.getWhoClicked(), "Changed to Permanent Mute");
-						}
-						
-						PunishDealer.permMute(player, e.getWhoClicked().getName(), reason);
-					}
-					
-					break;
-				case HISTORICAL_ENTRY:
-					closeInventoryRunnable((Player) e.getWhoClicked());
-					openPunishHistoryMenu(player, (Player) e.getWhoClicked());
-					
-					break;
-				default: break;
+					PunishDealer.punish(type, player, e.getWhoClicked().getName(), reason);
+				}
 			}
 			
 			refreshMainMenu(inv, (Player) e.getWhoClicked(), player, file, reason);
@@ -181,9 +130,7 @@ public class GUIClickListener implements Listener
 				Infraction infraction = infractions.get(e.getSlot());
 				
 				if (infraction.isActive())
-				{
-					PunishDealer.revertPunishment(file.getUUID(), infraction.getType(), (Player) e.getWhoClicked(), reason);
-				}
+					PunishDealer.revertPunishment(infraction.getType(), file.getUUID(), (Player) e.getWhoClicked(), reason);
 				
 				refreshHistoryMenu(inv);
 				refreshMainMenu(mainMenu, (Player) e.getWhoClicked(), player, file, reason);
@@ -243,24 +190,30 @@ public class GUIClickListener implements Listener
 				Infraction currentInfraction = infractions.get(i);
 				ItemStack itemStack = currentInfraction.getType().getItem().clone();
 				
-				String[] loreHistory = Message.HISTORY
-						.replace("%reason%", currentInfraction.getReason())
-						.replace("%punisher%", currentInfraction.getGivenBy())
-						.replace("%date%", currentInfraction.getDateString())
-						.split("#n");
+				List<String> formattedHistoryList = new ArrayList<String>();
+				List<String> historyList = Message.HISTORY.getList();
+				
+				for (String message : historyList)
+					formattedHistoryList.add(message
+							.replace("{reason}", currentInfraction.getReason())
+							.replace("{punisher}", currentInfraction.getGivenBy())
+							.replace("{date}", currentInfraction.getDateString())
+							.replace("{expiration}", currentInfraction.getExpiration()));
 				
 				if (!currentInfraction.getRemovedBy().isEmpty() && !currentInfraction.getRemoveReason().isEmpty())
 				{
-					String[] loreHistoryRemovedBy = Message.HISTORY_REMOVED_BY
-							.replace("%remover%", currentInfraction.getRemovedBy())
-							.replace("%remove_reason%", currentInfraction.getRemoveReason())
-							.split("#n");
+					List<String> formattedHistoryRemovedList = new ArrayList<String>();
+					List<String> historyRemovedList = Message.HISTORY_REMOVED_BY.getList();
 					
-					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()), (String[]) ArrayUtils.addAll(loreHistory, loreHistoryRemovedBy));
-				} else
-				{
-					GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()), loreHistory);
+					for (String message : historyRemovedList)
+						formattedHistoryRemovedList.add(message
+								.replace("{remover}", currentInfraction.getRemovedBy())
+								.replace("{remove_reason}", currentInfraction.getRemoveReason()));
+					
+					formattedHistoryList.addAll(formattedHistoryRemovedList);
 				}
+				
+				GUIConstructor.editMetadata(itemStack, ChatColor.AQUA + ChatColor.stripColor(currentInfraction.getType().getPlural()), formattedHistoryList);
 				
 				if (currentInfraction.isActive()) itemStack = GUIConstructor.addGlow(itemStack);
 				
@@ -282,7 +235,7 @@ public class GUIClickListener implements Listener
 		*/
 		
 		ItemStack back = new ItemStack(Material.ARROW, 1);
-		GUIConstructor.editMetadata(back, ChatColor.GREEN + "Back to Main Menu");
+		GUIConstructor.editMetadata(back, ChatColor.GREEN + "Back to Main Menu", null);
 		
 		inv.setItem(inv.getSize() - 1, back);
 		

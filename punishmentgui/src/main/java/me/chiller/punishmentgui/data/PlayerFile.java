@@ -22,6 +22,8 @@ import java.util.*;
 public class PlayerFile
 {
 	private UUID id;
+	private String ip;
+	
 	private File file;
 	private YamlConfiguration config;
 	
@@ -42,6 +44,7 @@ public class PlayerFile
 		this.config = YamlConfiguration.loadConfiguration(file);
 		this.file = file;
 		
+		ip = config.getString("ip_address", "");
 		infractions = config.getInt("current_infractions", 0);
 		banExpiration = config.getLong("expiration.ban", 0L);
 		muteExpiration = config.getLong("expiration.mute", 0L);
@@ -255,7 +258,7 @@ public class PlayerFile
 			unActivateInfraction(type, remover, reason);
 		}
 		
-		save();
+		saveAll();
 	}
 	
 	private void setExpiration(PunishType type, long expiration)
@@ -288,7 +291,7 @@ public class PlayerFile
 		infractionHistory.put(infraction.getDate(), infraction);
 		
 		setPunishmentActivity(infraction.getType(), true);
-		save();
+		saveAll();
 	}
 	
 	public void unActivateInfraction(PunishType type, Player remover, String reason)
@@ -307,10 +310,10 @@ public class PlayerFile
 			}
 		}
 		
-		save();
+		saveAll();
 	}
 	
-	public void save()
+	public void saveAll()
 	{
 		config.set("history", infractionHistory);
 		
@@ -318,6 +321,11 @@ public class PlayerFile
 		config.set("expiration.ban", banExpiration);
 		config.set("expiration.mute", muteExpiration);
 		
+		save();
+	}
+	
+	public void save()
+	{
 		try
 		{
 			config.save(file);
@@ -335,6 +343,18 @@ public class PlayerFile
 	public UUID getUUID()
 	{
 		return id;
+	}
+	
+	public void setIp(String ip)
+	{
+		config.set("ip_address", this.ip = ip);
+		
+		save();
+	}
+	
+	public String getIp()
+	{
+		return ip;
 	}
 	
 	public boolean hasAnyInfraction()
@@ -358,6 +378,6 @@ public class PlayerFile
 			}
 		}
 		
-		save();
+		saveAll();
 	}
 }

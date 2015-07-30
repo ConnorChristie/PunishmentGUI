@@ -1,6 +1,11 @@
 # PunishmentGUI
 Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCraft**!
 
+### Commands
+- **/punish \<player\> \<reason\>** - Opens the punishment GUI for that player
+  - Requires permission: punish.use
+- **/p \<player\> \<reason\>** - Same as above
+
 ### Permissions
 - **punish.use** - Gives the ability to use the punishment GUI
 - **punish.temp_mute** - Gives the ability to temporarily mute a player
@@ -9,7 +14,6 @@ Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCr
 - **punish.perm_ban** - Gives the ability to permanently ban a player
 - **punish.protected** - Makes the player invulnerable to punishments
 
-### Commands
-- **/punish \<player\> \<reason\>** - Opens the punishment GUI for that player
-  - Requires permission: punish.use
-- **/p \<player\> \<reason\>** - Same as above
+### Todo
+- ~~Add motd status if banned or muted~~
+- ~~Add expiration argument to messages~~
