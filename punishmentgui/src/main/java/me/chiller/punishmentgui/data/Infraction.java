@@ -21,6 +21,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 	private String givenBy;
 	private String removedBy;
 	private String removeReason;
+	private String expiration;
 	
 	public Infraction(PunishType type, String reason, long date, String givenBy)
 	{
@@ -35,12 +36,27 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		this.removeReason = "";
 	}
 	
+	public Infraction(PunishType type, String reason, long date, long expiration, String givenBy)
+	{
+		this.type = type;
+		this.reason = reason;
+		
+		this.date = date;
+		this.expiration = Util.getFormattedDate(expiration);
+		this.active = type != PunishType.WARN;
+		
+		this.givenBy = givenBy;
+		this.removedBy = "";
+		this.removeReason = "";
+	}
+	
 	public Infraction(Map<String, Object> map)
 	{
 		type = PunishType.valueOf((String) map.get("type"));
 		reason = (String) map.get("reason");
 		
 		active = (Boolean) map.get("active");
+		expiration = (String) map.get("expiration");
 		
 		givenBy = (String) map.get("given_by");
 		removedBy = (String) map.get("removed_by");
@@ -106,6 +122,16 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 	{
 		this.active = active;
 	}
+	
+	public void setExpiration(String expiration)
+	{
+		this.expiration = expiration;
+	}
+	
+	public String getExpiration()
+	{
+		return expiration == null ? "Never" : expiration;
+	}
 
 	public Map<String, Object> serialize()
 	{
@@ -115,6 +141,7 @@ public class Infraction implements ConfigurationSerializable, Comparable<Infract
 		map.put("reason", reason);
 		
 		map.put("active", active);
+		map.put("expiration", expiration);
 		
 		map.put("given_by", givenBy);
 		map.put("removed_by", removedBy);
