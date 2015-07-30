@@ -8,24 +8,24 @@ messages:
     &6{punisher}#n{message_suffix}'
   perm_mute: '{message_prefix} &4You have been permanently muted &6({reason}) &4by
     &6{punisher}'
-  temp_ban: '{message_prefix} &4You have been banned until &b{date} &6({reason}) &4by
+  temp_ban: '{message_prefix} &4You have been banned until &b{expiration} &6({reason}) &4by
     &6{punisher}#n{message_suffix}'
   temp_mute: '{message_prefix} &4You have been temporarily muted &6({reason}) &4by
     &6{punisher}'
   login_perm_ban: '{message_prefix} &4You have been permanently banned &6({reason})
     &4by &6{punisher}#n{message_suffix}'
-  login_temp_ban: '{message_prefix} &4You have been banned until &b{date} &6({reason})
+  login_temp_ban: '{message_prefix} &4You have been banned until &b{expiration} &6({reason})
     &4by &6{punisher}#n{message_suffix}'
   not_punishable: '{message_prefix} &4You are not allowed to punish &6{punished}'
   perm_muted: '{message_prefix} &4You are permanently muted for &6{reason} &4by &3{punisher}'
-  temp_muted: '{message_prefix} &4You are muted until &b{date} &4for &6{reason} &4by
+  temp_muted: '{message_prefix} &4You are muted until &b{expiration} &4for &6{reason} &4by
     &3{punisher}'
   perm_ban_unknown: '{message_prefix} &4You have been banned for an unknown reason#n{message_suffix}'
   temp_ban_unknown: '{message_prefix} &4You have been banned for an unknown reason at an unknown time#n{message_suffix}'
   motd_perm_ban: '&4You are permanently banned by &3{punisher} &4for &6{reason}'
   motd_perm_mute: '&4You are permanently muted by &3{punisher} &4for &6{reason}'
-  motd_temp_ban: '&4You are banned until &b{date} &4by &3{punisher} &4for &6{reason}'
-  motd_temp_mute: '&4You are muted until &b{date} &4by &3{punisher} &4for &6{reason}'
+  motd_temp_ban: '&4You are banned until &b{expiration} &4by &3{punisher} &4for &6{reason}'
+  motd_temp_mute: '&4You are muted until &b{expiration} &4by &3{punisher} &4for &6{reason}'
   motd_ban_unknown: '&4You have been banned for an unknown reason'
   motd_mute_unknown: '&4You have been muted for an unknown reason'
 lore:
