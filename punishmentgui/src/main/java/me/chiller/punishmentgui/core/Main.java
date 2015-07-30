@@ -111,7 +111,7 @@ public class Main extends JavaPlugin
 	private void registerListeners()
 	{
 		new GUIClickListener(this);
-		new PunishmentChecker(this);
+		new PunishmentChecker();
 	}
 	
 	private void loadPlayerFiles()
