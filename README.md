@@ -1,6 +1,11 @@
 # PunishmentGUI
 Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCraft**!
 
+### About
+This plugin was created to allow server admins to punish other players in their server.
+The admins are allowed to warn players, temporarily mute and ban players and permanently mute and ban players!
+This plugin uses a custom inventory GUI that contains the buttons to perform the above actions!
+
 ### How to Use
 1. Put the PunishmentGUI.jar into your plugins directory
 2. Restart or reload your server
