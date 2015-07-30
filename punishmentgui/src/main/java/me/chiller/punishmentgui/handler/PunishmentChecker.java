@@ -21,7 +21,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -31,9 +30,9 @@ public class PunishmentChecker implements Listener
 {
 	private List<UUID> kickedUUIDs = new ArrayList<UUID>();
 	
-	public PunishmentChecker(JavaPlugin plugin)
+	public PunishmentChecker()
 	{
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		Main.getInstance().getServer().getPluginManager().registerEvents(this, Main.getInstance());
 	}
 	
 	@EventHandler
@@ -43,54 +42,45 @@ public class PunishmentChecker implements Listener
 		{
 			PlayerFile file = Main.getInstance().getPlayerFile(event.getAddress().getHostAddress());
 			
-			if (file.hasInfraction(PunishType.PERM_BAN, PunishType.TEMP_BAN))
+			if (file != null)
 			{
-				if (file.hasInfraction(PunishType.PERM_BAN))
+				if (file.hasInfraction(PunishType.PERM_BAN, PunishType.TEMP_BAN))
 				{
-					Infraction infraction = file.getLatestInfraction(PunishType.PERM_BAN);
-					
-					if (infraction != null)
+					if (file.hasInfraction(PunishType.PERM_BAN))
 					{
-						event.setMotd(Message.MOTD_PERM_BAN.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()));
-					} else
+						Infraction infraction = file.getLatestInfraction(PunishType.PERM_BAN);
+						
+						if (infraction != null)
+							event.setMotd(Message.MOTD_PERM_BAN.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()));
+						else
+							event.setMotd(Message.MOTD_BAN_UNKNOWN.toString());
+					} else if (file.isPunishmentActive(PunishType.TEMP_BAN))
 					{
-						event.setMotd(Message.MOTD_BAN_UNKNOWN.toString());
+						Infraction infraction = file.getLatestInfraction(PunishType.TEMP_BAN);
+						
+						if (infraction != null)
+							event.setMotd(Message.MOTD_TEMP_BAN.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()).replace("{date}", infraction.getDateString()).replace("{expiration}", file.getExpiration(infraction.getType())));
+						else
+							event.setMotd(Message.MOTD_BAN_UNKNOWN.toString());
 					}
-				} else
+				} else if (file.hasInfraction(PunishType.PERM_MUTE, PunishType.TEMP_MUTE))
 				{
-					Infraction infraction = file.getLatestInfraction(PunishType.TEMP_BAN);
-					
-					if (infraction != null)
+					if (file.hasInfraction(PunishType.PERM_MUTE))
 					{
-						event.setMotd(Message.MOTD_TEMP_BAN.replace("{date}", file.getExpiration(infraction.getType())).replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()));
-					} else
+						Infraction infraction = file.getLatestInfraction(PunishType.PERM_MUTE);
+						
+						if (infraction != null)
+							event.setMotd(Message.MOTD_PERM_MUTE.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()));
+						else
+							event.setMotd(Message.MOTD_MUTE_UNKNOWN.toString());
+					} else if (file.isPunishmentActive(PunishType.TEMP_MUTE))
 					{
-						event.setMotd(Message.MOTD_BAN_UNKNOWN.toString());
-					}
-				}
-			} else if (file.hasInfraction(PunishType.PERM_MUTE, PunishType.TEMP_MUTE))
-			{
-				if (file.hasInfraction(PunishType.PERM_MUTE))
-				{
-					Infraction infraction = file.getLatestInfraction(PunishType.PERM_MUTE);
-					
-					if (infraction != null)
-					{
-						event.setMotd(Message.MOTD_PERM_MUTE.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()));
-					} else
-					{
-						event.setMotd(Message.MOTD_MUTE_UNKNOWN.toString());
-					}
-				} else
-				{
-					Infraction infraction = file.getLatestInfraction(PunishType.TEMP_MUTE);
-					
-					if (infraction != null)
-					{
-						event.setMotd(Message.MOTD_TEMP_MUTE.replace("{date}", file.getExpiration(infraction.getType())).replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()));
-					} else
-					{
-						event.setMotd(Message.MOTD_MUTE_UNKNOWN.toString());
+						Infraction infraction = file.getLatestInfraction(PunishType.TEMP_MUTE);
+						
+						if (infraction != null)
+							event.setMotd(Message.MOTD_TEMP_MUTE.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()).replace("{date}", infraction.getDateString()).replace("{expiration}", file.getExpiration(infraction.getType())));
+						else
+							event.setMotd(Message.MOTD_MUTE_UNKNOWN.toString());
 					}
 				}
 			}
@@ -131,7 +121,7 @@ public class PunishmentChecker implements Listener
 				
 				if (infraction != null)
 				{
-					kickPlayer(event, Message.LOGIN_TEMP_BAN.replace("{date}", file.getExpiration(infraction.getType())).replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()), PunishType.TEMP_BAN);
+					kickPlayer(event, Message.LOGIN_TEMP_BAN.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()).replace("{date}", infraction.getDateString()).replace("{expiration}", file.getExpiration(infraction.getType())), PunishType.TEMP_BAN);
 				} else
 				{
 					kickPlayer(event, Message.TEMP_BAN_UNKNOWN.toString(), PunishType.TEMP_BAN);
@@ -235,7 +225,7 @@ public class PunishmentChecker implements Listener
 				
 				if (infraction != null)
 				{
-					Util.sendMessage(Message.TEMP_MUTED.replace("{date}", file.getExpiration(PunishType.TEMP_MUTE)).replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()), e.getPlayer());
+					Util.sendMessage(Message.TEMP_MUTED.replace("{reason}", infraction.getReason()).replace("{punisher}", infraction.getGivenBy()).replace("{date}", infraction.getDateString()).replace("{expiration}", file.getExpiration(PunishType.TEMP_MUTE)), e.getPlayer());
 					Util.sendSuffix(e.getPlayer());
 				}
 			} else if (file.isPunishmentActive(PunishType.PERM_MUTE))
