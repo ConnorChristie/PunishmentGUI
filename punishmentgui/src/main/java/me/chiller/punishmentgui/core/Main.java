@@ -8,11 +8,16 @@ import me.chiller.punishmentgui.external.Updater.UpdateType;
 import me.chiller.punishmentgui.handler.PunishmentChecker;
 import me.chiller.punishmentgui.invgui.GUIClickListener;
 import me.chiller.punishmentgui.invgui.GUIConstructor;
+import me.chiller.punishmentgui.resources.Message;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -143,12 +148,80 @@ public class Main extends JavaPlugin
 		ConfigurationSerialization.registerClass(Infraction.class);
 	}
 	
+	@SuppressWarnings({ "unchecked", "unused" })
 	private void updateConfig()
 	{
 		if (!getConfig().contains("motd_infraction_status"))
 		{
 			getConfig().set("motd_infraction_status", true);
 		}
+		
+		Set<String> keys = getConfig().getKeys(true);
+		boolean containsExpiration = false;
+		
+		for (String key : keys)
+		{
+			Object obj = getConfig().get(key);
+			
+			if (obj instanceof String)
+			{
+				if (((String) obj).contains("{expiration}"))
+				{
+					containsExpiration = true;
+					
+					break;
+				}
+			} else if (obj instanceof List)
+			{
+				for (String str : (List<String>) obj)
+				{
+					if (str.contains("{expiration}"))
+					{
+						containsExpiration = true;
+						
+						break;
+					}
+				}
+			}
+		}
+		
+		if (!containsExpiration)
+		{
+			for (String key : keys)
+			{
+				Object obj = getConfig().get(key);
+				
+				if (obj instanceof String)
+				{
+					if (((String) obj).contains("{date}"))
+					{
+						getConfig().set(key, ((String) obj).replace("{date}", "{expiration}"));
+					}
+				} else if (obj instanceof List)
+				{
+					List<String> replacement = new ArrayList<String>();
+					
+					for (String str : (List<String>) obj)
+					{
+						if (str.contains("{date}"))
+						{
+							str.replace("{date}", "{expiration}");
+						}
+						
+						replacement.add(str);
+					}
+					
+					getConfig().set(key, replacement);
+				}
+			}
+		}
+		
+		if (getConfig().get("lore.history") instanceof String)
+		{
+			getConfig().set("lore.history", Arrays.asList(new String[] { "&6Reason: &c{reason}", "&6Given by: &c{punisher}", "&6Date: &c{date}", "&6Expiration: &c{expiration}" }));
+		}
+		
+		Message msg = Message.WARN; //Instantiate static
 		
 		//All other messages that are not already in the config update in the Message class
 	}
