@@ -32,8 +32,14 @@ public class PunishDealer
 			
 			if (player.isOnline())
 			{
-				Util.sendMessage(type.getMessage().replace("{reason}", reason).replace("{punisher}", punisherName).replace("{date}", infraction.getDateString()).replace("{expiration}", expiration), ((Player) player));
-				Util.sendSuffix((Player) player);
+				if (type == PunishType.PERM_BAN || type == PunishType.TEMP_BAN)
+				{
+					((Player) player).kickPlayer(type.getMessage().replace("{reason}", reason).replace("{punisher}", punisherName).replace("{date}", infraction.getDateString()).replace("{expiration}", expiration));
+				} else
+				{
+					Util.sendMessage(type.getMessage().replace("{reason}", reason).replace("{punisher}", punisherName).replace("{date}", infraction.getDateString()).replace("{expiration}", expiration), ((Player) player));
+					Util.sendSuffix((Player) player);
+				}
 			}
 		} else
 		{
@@ -44,8 +50,14 @@ public class PunishDealer
 			
 			if (player.isOnline())
 			{
-				Util.sendMessage(type.getMessage().replace("{reason}", reason).replace("{punisher}", punisherName).replace("{date}", infraction.getDateString()), ((Player) player));
-				Util.sendSuffix((Player) player);
+				if (type == PunishType.PERM_BAN || type == PunishType.TEMP_BAN)
+				{
+					((Player) player).kickPlayer(type.getMessage().replace("{reason}", reason).replace("{punisher}", punisherName).replace("{date}", infraction.getDateString()));
+				} else
+				{
+					Util.sendMessage(type.getMessage().replace("{reason}", reason).replace("{punisher}", punisherName).replace("{date}", infraction.getDateString()), ((Player) player));
+					Util.sendSuffix((Player) player);
+				}
 			}
 		}
 	}
