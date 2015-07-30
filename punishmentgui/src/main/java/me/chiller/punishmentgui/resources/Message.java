@@ -152,6 +152,11 @@ public enum Message
 		return list;
 	}
 	
+	public List<String> getDefaultList()
+	{
+		return defList;
+	}
+	
 	public String toString()
 	{
 		return value;
