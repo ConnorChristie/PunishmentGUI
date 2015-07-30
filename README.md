@@ -16,3 +16,4 @@ Bukkit plugin originally created by: **Ethan160503**, modified by **TheChillerCr
 
 ### Todo
 - ~~Add motd status if banned or muted~~
+- ~~Add expiration argument to messages~~
