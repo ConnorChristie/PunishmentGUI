@@ -41,7 +41,7 @@ import org.json.simple.JSONValue;
 public class Updater
 {
 	
-	/* Constants */
+	
 	
 	// Remote file's title
 	private static final String TITLE_VALUE = "name";
@@ -72,7 +72,7 @@ public class Updater
 	// Default disable value in config
 	private static final boolean DISABLE_DEFAULT = false;
 	
-	/* User-provided variables */
+	
 	
 	// Plugin running Updater
 	private final Plugin plugin;
@@ -91,14 +91,14 @@ public class Updater
 	// BukkitDev ServerMods API key
 	private String apiKey = null;
 	
-	/* Collected from Curse API */
+	
 	
 	private String versionName;
 	private String versionLink;
 	private String versionType;
 	private String versionGameVersion;
 	
-	/* Update process variables */
+	
 	
 	// Connection to RSS
 	private URL url;

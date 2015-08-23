@@ -37,6 +37,7 @@ public class GUIClickListener implements Listener
 	private Main main;
 	
 	private Inventory mainMenu;
+	private PunishDealer punishDealer;
 	
 	private OfflinePlayer player;
 	private PlayerFile file;
@@ -45,6 +46,7 @@ public class GUIClickListener implements Listener
 	public GUIClickListener(Main main)
 	{
 		this.main = main;
+		this.punishDealer = new PunishDealer();
 		
 		main.getServer().getPluginManager().registerEvents(this, main);
 	}
@@ -90,7 +92,7 @@ public class GUIClickListener implements Listener
 			{
 				if (file.hasInfraction(type))
 				{
-					PunishDealer.revertPunishment(type, punishedUUID, (Player) e.getWhoClicked(), reason);
+					punishDealer.revertPunishment(type, punishedUUID, (Player) e.getWhoClicked(), reason);
 				} else
 				{
 					if (type == PunishType.TEMP_BAN && file.hasInfraction(PunishType.PERM_BAN))
@@ -102,7 +104,7 @@ public class GUIClickListener implements Listener
 					else if (type == PunishType.PERM_MUTE && file.hasInfraction(PunishType.TEMP_MUTE))
 						file.setPunishmentActivity(PunishType.TEMP_MUTE, false, (Player) e.getWhoClicked(), "Changed to Permanent Mute");
 					
-					PunishDealer.punish(type, player, e.getWhoClicked().getName(), reason);
+					punishDealer.punish(type, player, e.getWhoClicked().getName(), reason);
 				}
 			}
 			
@@ -130,7 +132,9 @@ public class GUIClickListener implements Listener
 				Infraction infraction = infractions.get(e.getSlot());
 				
 				if (infraction.isActive())
-					PunishDealer.revertPunishment(infraction.getType(), file.getUUID(), (Player) e.getWhoClicked(), reason);
+				{
+					punishDealer.revertPunishment(infraction.getType(), file.getUUID(), (Player) e.getWhoClicked(), reason);
+				}
 				
 				refreshHistoryMenu(inv);
 				refreshMainMenu(mainMenu, (Player) e.getWhoClicked(), player, file, reason);

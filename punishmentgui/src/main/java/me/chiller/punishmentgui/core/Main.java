@@ -84,6 +84,7 @@ public class Main extends JavaPlugin
 		}
 		
 		File file = new File(playersDir, uuid.toString() + ".yml");
+		
 		try
 		{
 			file.createNewFile();
